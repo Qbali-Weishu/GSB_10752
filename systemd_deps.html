@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Systemd Dependency Graph - multi-user.target</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #graph-container {
+            width: 100%;
+            height: 800px;
+            border: 1px solid #ddd;
+            background-color: white;
+            position: relative;
+        }
+        .node {
+            cursor: pointer;
+        }
+        .node text {
+            font-size: 10px;
+            pointer-events: none;
+        }
+        .link {
+            stroke-width: 1.5px;
+        }
+        .link-label {
+            font-size: 8px;
+            fill: #666;
+        }
+        .tooltip {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 1000;
+            max-width: 300px;
+        }
+        .legend {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+        .legend h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .legend-item {
+            margin-bottom: 5px;
+        }
+        .legend-color {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        #controls {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 8px 15px;
+            margin: 0 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Systemd Dependency Graph - multi-user.target</h1>
+    <div id="controls">
+        <button id="zoom-in">Zoom In</button>
+        <button id="zoom-out">Zoom Out</button>
+        <button id="reset-zoom">Reset</button>
+    </div>
+    <div id="graph-container">
+        <div class="legend">
+            <h3>Unit Types</h3>
+            <div class="legend-item"><span class="legend-color" style="background-color: #FFD700;"></span>target</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #1E90FF;"></span>service</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #32CD32;"></span>socket</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #FF69B4;"></span>device</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #9370DB;"></span>mount</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #8B4513;"></span>automount</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #FFA500;"></span>swap</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #00CED1;"></span>timer</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #DC143C;"></span>path</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #2F4F4F;"></span>slice</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #708090;"></span>scope</div>
+            <h3>Relationships</h3>
+            <div class="legend-item"><span class="legend-color" style="background-color: #FF0000;"></span>Requires</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #0000FF;"></span>Wants</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #008000;"></span>After</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #800080;"></span>Before</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #FF4500;"></span>Requisite</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #8B0000;"></span>Conflicts</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #4B0082;"></span>PartOf</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #8B4513;"></span>BindsTo</div>
+            <div class="legend-item"><span class="legend-color" style="background-color: #708090;"></span>Alias</div>
+        </div>
+        <div class="tooltip" id="tooltip"></div>
+    </div>
+
+    <script>
+        // Data
+        const nodes = [{"id": "multi-user.target", "type": "target", "description": "Multi-User System", "color": "#FFD700"}, {"id": "basic.target", "type": "target", "description": "Basic System", "color": "#FFD700"}, {"id": "rescue.service", "type": "service", "description": "Rescue Shell", "color": "#1E90FF"}, {"id": "rescue.target", "type": "target", "description": "Rescue Mode", "color": "#FFD700"}, {"id": "sysinit.target", "type": "target", "description": "System Initialization", "color": "#FFD700"}, {"id": "sockets.target", "type": "target", "description": "Socket Units", "color": "#FFD700"}, {"id": "timers.target", "type": "target", "description": "Timer Units", "color": "#FFD700"}, {"id": "paths.target", "type": "target", "description": "Path Units", "color": "#FFD700"}, {"id": "slices.target", "type": "target", "description": "Slice Units", "color": "#FFD700"}, {"id": "tmp.mount", "type": "mount", "description": "Unit file not found", "color": "#9370DB"}, {"id": "plymouth-start.service", "type": "service", "description": "Show Plymouth Boot Screen", "color": "#1E90FF"}, {"id": "shutdown.target", "type": "target", "description": "System Shutdown", "color": "#FFD700"}, {"id": "local-fs.target", "type": "target", "description": "Local File Systems", "color": "#FFD700"}, {"id": "swap.target", "type": "target", "description": "Swaps", "color": "#FFD700"}, {"id": "emergency.service", "type": "service", "description": "Emergency Shell", "color": "#1E90FF"}, {"id": "emergency.target", "type": "target", "description": "Emergency Mode", "color": "#FFD700"}, {"id": "-.slice", "type": "slice", "description": "Unit file not found", "color": "#2F4F4F"}, {"id": "system.slice", "type": "slice", "description": "Unit file not found", "color": "#2F4F4F"}, {"id": "systemd-ask-password-plymouth.path", "type": "path", "description": "Forward Password Requests to Plymouth Directory Watch", "color": "#DC143C"}, {"id": "systemd-udev-trigger.service", "type": "service", "description": "Coldplug All udev Devices", "color": "#1E90FF"}, {"id": "systemd-udevd.service", "type": "service", "description": "Rule-based Manager for Device Events and Files", "color": "#1E90FF"}, {"id": "keyboard-setup.service", "type": "service", "description": "Set the console keyboard layout", "color": "#1E90FF"}, {"id": "systemd-ask-password-plymouth.service", "type": "service", "description": "Forward Password Requests to Plymouth", "color": "#1E90FF"}, {"id": "local-fs-pre.target", "type": "target", "description": "Preparation for Local File Systems", "color": "#FFD700"}, {"id": "systemd-udevd-kernel.socket", "type": "socket", "description": "udev Kernel Socket", "color": "#32CD32"}, {"id": "systemd-udevd-control.socket", "type": "socket", "description": "udev Control Socket", "color": "#32CD32"}, {"id": "systemd-sysusers.service", "type": "service", "description": "Create System Users", "color": "#1E90FF"}, {"id": "systemd-hwdb-update.service", "type": "service", "description": "Rebuild Hardware Database", "color": "#1E90FF"}, {"id": "systemd-remount-fs.service", "type": "service", "description": "Remount Root and Kernel File Systems", "color": "#1E90FF"}, {"id": "systemd-tmpfiles-setup-dev-early.service", "type": "service", "description": "Create Static Device Nodes in /dev gracefully", "color": "#1E90FF"}, {"id": "systemd-tmpfiles-setup-dev.service", "type": "service", "description": "Create Static Device Nodes in /dev", "color": "#1E90FF"}, {"id": "systemd-update-done.service", "type": "service", "description": "Update is Completed", "color": "#1E90FF"}, {"id": "initrd-switch-root.target", "type": "target", "description": "Switch Root", "color": "#FFD700"}, {"id": "systemd-fsck-root.service", "type": "service", "description": "File System Check on Root Device", "color": "#1E90FF"}, {"id": "initrd-switch-root.service", "type": "service", "description": "Switch Root", "color": "#1E90FF"}, {"id": "initrd-udevadm-cleanup-db.service", "type": "service", "description": "Cleanup udev Database", "color": "#1E90FF"}, {"id": "initrd-root-fs.target", "type": "target", "description": "Initrd Root File System", "color": "#FFD700"}, {"id": "initrd-fs.target", "type": "target", "description": "Initrd File Systems", "color": "#FFD700"}, {"id": "systemd-journald.service", "type": "service", "description": "Journal Service", "color": "#1E90FF"}, {"id": "initrd-cleanup.service", "type": "service", "description": "Cleaning Up and Shutting Down Daemons", "color": "#1E90FF"}, {"id": "systemd-fsckd.socket", "type": "socket", "description": "fsck to fsckd communication Socket", "color": "#32CD32"}, {"id": "systemd-udev-settle.service", "type": "service", "description": "Wait for udev To Complete Device Initialization", "color": "#1E90FF"}, {"id": "initrd-parse-etc.service", "type": "service", "description": "Mountpoints Configured in the Real Root", "color": "#1E90FF"}, {"id": "systemd-journald.socket", "type": "socket", "description": "Journal Socket", "color": "#32CD32"}, {"id": "systemd-journald-dev-log.socket", "type": "socket", "description": "Journal Socket (/dev/log)", "color": "#32CD32"}, {"id": "systemd-journald-audit.socket", "type": "socket", "description": "Journal Audit Socket", "color": "#32CD32"}, {"id": "syslog.socket", "type": "socket", "description": "Syslog Socket", "color": "#32CD32"}, {"id": "soft-reboot.target", "type": "target", "description": "Reboot System Userspace", "color": "#FFD700"}, {"id": "initrd.target", "type": "target", "description": "Initrd Default Target", "color": "#FFD700"}, {"id": "systemd-soft-reboot.service", "type": "service", "description": "Reboot System Userspace", "color": "#1E90FF"}, {"id": "initrd-root-device.target", "type": "target", "description": "Initrd Root Device", "color": "#FFD700"}, {"id": "initrd-usr-fs.target", "type": "target", "description": "Initrd /usr File System", "color": "#FFD700"}, {"id": "umount.target", "type": "target", "description": "Unmount All Filesystems", "color": "#FFD700"}, {"id": "final.target", "type": "target", "description": "Late Shutdown Services", "color": "#FFD700"}, {"id": "thermald.service", "type": "service", "description": "Thermal Daemon Service", "color": "#1E90FF"}, {"id": "tat_install.service", "type": "service", "description": "TAT Installation Service", "color": "#1E90FF"}, {"id": "unattended-upgrades.service", "type": "service", "description": "Unattended Upgrades Shutdown", "color": "#1E90FF"}, {"id": "snapd.recovery-chooser-trigger.service", "type": "service", "description": "Wait for the Ubuntu Core chooser trigger", "color": "#1E90FF"}, {"id": "rsyslog.service", "type": "service", "description": "System Logging Service", "color": "#1E90FF"}, {"id": "ua-reboot-cmds.service", "type": "service", "description": "Ubuntu Pro reboot cmds", "color": "#1E90FF"}, {"id": "chrony.service", "type": "service", "description": "chrony, an NTP client/server", "color": "#1E90FF"}, {"id": "ssh.service", "type": "service", "description": "OpenBSD Secure Shell server", "color": "#1E90FF"}, {"id": "networkd-dispatcher.service", "type": "service", "description": "Dispatcher daemon for systemd-networkd", "color": "#1E90FF"}, {"id": "redis-server.service", "type": "service", "description": "Advanced key-value store", "color": "#1E90FF"}, {"id": "containerd.service", "type": "service", "description": "containerd container runtime", "color": "#1E90FF"}, {"id": "open-vm-tools.service", "type": "service", "description": "Service for virtual machines hosted on VMware", "color": "#1E90FF"}, {"id": "grub-initrd-fallback.service", "type": "service", "description": "GRUB failed boot detection", "color": "#1E90FF"}, {"id": "tat_agent.service", "type": "service", "description": "tat_agent", "color": "#1E90FF"}, {"id": "snapd.core-fixup.service", "type": "service", "description": "Automatically repair incorrect owner/permissions on core devices", "color": "#1E90FF"}, {"id": "sysstat.service", "type": "service", "description": "Resets System Activity Logs", "color": "#1E90FF"}, {"id": "snapd.service", "type": "service", "description": "Snap Daemon", "color": "#1E90FF"}, {"id": "snapd.apparmor.service", "type": "service", "description": "Load AppArmor profiles managed internally by snapd", "color": "#1E90FF"}, {"id": "ufw.service", "type": "service", "description": "Uncomplicated firewall", "color": "#1E90FF"}, {"id": "ModemManager.service", "type": "service", "description": "Modem Manager", "color": "#1E90FF"}, {"id": "snapd.autoimport.service", "type": "service", "description": "Auto import assertions from block devices", "color": "#1E90FF"}, {"id": "pollinate.service", "type": "service", "description": "Pollinate to seed the pseudo random number generator", "color": "#1E90FF"}, {"id": "secureboot-db.service", "type": "service", "description": "Secure Boot updates for DB and DBX", "color": "#1E90FF"}, {"id": "grub-common.service", "type": "service", "description": "Record successful boot for GRUB", "color": "#1E90FF"}, {"id": "remote-fs.target", "type": "target", "description": "Remote File Systems", "color": "#FFD700"}, {"id": "lxd-installer.socket", "type": "socket", "description": "Helper to install lxd snap on demand", "color": "#32CD32"}, {"id": "apport.service", "type": "service", "description": "automatic crash report generation", "color": "#1E90FF"}, {"id": "docker.service", "type": "service", "description": "Docker Application Container Engine", "color": "#1E90FF"}, {"id": "e2scrub_reap.service", "type": "service", "description": "Remove Stale Online ext4 Metadata Check Snapshots", "color": "#1E90FF"}, {"id": "systemd-networkd.service", "type": "service", "description": "Network Configuration", "color": "#1E90FF"}, {"id": "mongod.service", "type": "service", "description": "MongoDB Database Server", "color": "#1E90FF"}, {"id": "dmesg.service", "type": "service", "description": "Save initial kernel messages after boot", "color": "#1E90FF"}, {"id": "snapd.seeded.service", "type": "service", "description": "Wait until snapd is fully seeded", "color": "#1E90FF"}, {"id": "inetutils-inetd.service", "type": "service", "description": "GNU Network Utilities internet superserver", "color": "#1E90FF"}, {"id": "ubuntu-advantage.service", "type": "service", "description": "Ubuntu Pro Background Auto Attach", "color": "#1E90FF"}, {"id": "console-setup.service", "type": "service", "description": "Set console font and keymap", "color": "#1E90FF"}, {"id": "cron.service", "type": "service", "description": "Regular background program processing daemon", "color": "#1E90FF"}, {"id": "dbus.service", "type": "service", "description": "D-Bus System Message Bus", "color": "#1E90FF"}, {"id": "systemd-logind.service", "type": "service", "description": "User Login Management", "color": "#1E90FF"}, {"id": "plymouth-quit.service", "type": "service", "description": "Terminate Plymouth Boot Screen", "color": "#1E90FF"}, {"id": "plymouth-quit-wait.service", "type": "service", "description": "Hold until boot process finishes up", "color": "#1E90FF"}, {"id": "getty.target", "type": "target", "description": "Login Prompts", "color": "#FFD700"}, {"id": "systemd-ask-password-wall.path", "type": "path", "description": "Forward Password Requests to Wall Directory Watch", "color": "#DC143C"}, {"id": "systemd-user-sessions.service", "type": "service", "description": "Permit User Sessions", "color": "#1E90FF"}, {"id": "systemd-update-utmp-runlevel.service", "type": "service", "description": "Record Runlevel Change in UTMP", "color": "#1E90FF"}];
+        const links = [{"source": "multi-user.target", "target": "basic.target", "type": "Requires", "color": "#FF0000"}, {"source": "multi-user.target", "target": "basic.target", "type": "After", "color": "#008000"}, {"source": "multi-user.target", "target": "rescue.service", "type": "After", "color": "#008000"}, {"source": "multi-user.target", "target": "rescue.target", "type": "After", "color": "#008000"}, {"source": "basic.target", "target": "sysinit.target", "type": "Requires", "color": "#FF0000"}, {"source": "basic.target", "target": "sockets.target", "type": "Wants", "color": "#0000FF"}, {"source": "basic.target", "target": "timers.target", "type": "Wants", "color": "#0000FF"}, {"source": "basic.target", "target": "paths.target", "type": "Wants", "color": "#0000FF"}, {"source": "basic.target", "target": "slices.target", "type": "Wants", "color": "#0000FF"}, {"source": "basic.target", "target": "tmp.mount", "type": "Wants", "color": "#0000FF"}, {"source": "basic.target", "target": "sysinit.target", "type": "After", "color": "#008000"}, {"source": "basic.target", "target": "sockets.target", "type": "After", "color": "#008000"}, {"source": "basic.target", "target": "paths.target", "type": "After", "color": "#008000"}, {"source": "basic.target", "target": "slices.target", "type": "After", "color": "#008000"}, {"source": "basic.target", "target": "tmp.mount", "type": "After", "color": "#008000"}, {"source": "rescue.service", "target": "sysinit.target", "type": "After", "color": "#008000"}, {"source": "rescue.service", "target": "plymouth-start.service", "type": "After", "color": "#008000"}, {"source": "rescue.service", "target": "shutdown.target", "type": "Before", "color": "#800080"}, {"source": "rescue.target", "target": "sysinit.target", "type": "Requires", "color": "#FF0000"}, {"source": "rescue.target", "target": "rescue.service", "type": "Requires", "color": "#FF0000"}, {"source": "rescue.target", "target": "sysinit.target", "type": "After", "color": "#008000"}, {"source": "rescue.target", "target": "rescue.service", "type": "After", "color": "#008000"}, {"source": "sysinit.target", "target": "local-fs.target", "type": "Wants", "color": "#0000FF"}, {"source": "sysinit.target", "target": "swap.target", "type": "Wants", "color": "#0000FF"}, {"source": "sysinit.target", "target": "local-fs.target", "type": "After", "color": "#008000"}, {"source": "sysinit.target", "target": "swap.target", "type": "After", "color": "#008000"}, {"source": "sysinit.target", "target": "emergency.service", "type": "Before", "color": "#800080"}, {"source": "sysinit.target", "target": "emergency.target", "type": "Before", "color": "#800080"}, {"source": "slices.target", "target": "-.slice", "type": "Wants", "color": "#0000FF"}, {"source": "slices.target", "target": "system.slice", "type": "Wants", "color": "#0000FF"}, {"source": "slices.target", "target": "-.slice", "type": "After", "color": "#008000"}, {"source": "slices.target", "target": "system.slice", "type": "After", "color": "#008000"}, {"source": "plymouth-start.service", "target": "systemd-ask-password-plymouth.path", "type": "Wants", "color": "#0000FF"}, {"source": "plymouth-start.service", "target": "systemd-udev-trigger.service", "type": "After", "color": "#008000"}, {"source": "plymouth-start.service", "target": "systemd-udevd.service", "type": "After", "color": "#008000"}, {"source": "plymouth-start.service", "target": "keyboard-setup.service", "type": "After", "color": "#008000"}, {"source": "plymouth-start.service", "target": "systemd-ask-password-plymouth.service", "type": "Before", "color": "#800080"}, {"source": "local-fs.target", "target": "local-fs-pre.target", "type": "After", "color": "#008000"}, {"source": "emergency.service", "target": "shutdown.target", "type": "Before", "color": "#800080"}, {"source": "emergency.service", "target": "rescue.service", "type": "Before", "color": "#800080"}, {"source": "emergency.target", "target": "emergency.service", "type": "Requires", "color": "#FF0000"}, {"source": "emergency.target", "target": "emergency.service", "type": "After", "color": "#008000"}, {"source": "systemd-ask-password-plymouth.path", "target": "plymouth-start.service", "type": "After", "color": "#008000"}, {"source": "systemd-ask-password-plymouth.path", "target": "basic.target", "type": "Before", "color": "#800080"}, {"source": "systemd-ask-password-plymouth.path", "target": "shutdown.target", "type": "Before", "color": "#800080"}, {"source": "systemd-udev-trigger.service", "target": "systemd-udevd.service", "type": "Wants", "color": "#0000FF"}, {"source": "systemd-udev-trigger.service", "target": "systemd-udevd-kernel.socket", "type": "After", "color": "#008000"}, {"source": "systemd-udev-trigger.service", "target": "systemd-udevd-control.socket", "type": "After", "color": "#008000"}, {"source": "systemd-udev-trigger.service", "target": "sysinit.target", "type": "Before", "color": "#800080"}, {"source": "systemd-udevd.service", "target": "systemd-sysusers.service", "type": "After", "color": "#008000"}, {"source": "systemd-udevd.service", "target": "systemd-hwdb-update.service", "type": "After", "color": "#008000"}, {"source": "systemd-udevd.service", "target": "sysinit.target", "type": "Before", "color": "#800080"}, {"source": "keyboard-setup.service", "target": "local-fs-pre.target", "type": "Wants", "color": "#0000FF"}, {"source": "keyboard-setup.service", "target": "local-fs-pre.target", "type": "Before", "color": "#800080"}, {"source": "sysinit.target", "target": "keyboard-setup.service", "type": "Wants", "color": "#0000FF"}, {"source": "systemd-ask-password-plymouth.service", "target": "plymouth-start.service", "type": "After", "color": "#008000"}, {"source": "systemd-ask-password-plymouth.service", "target": "shutdown.target", "type": "Before", "color": "#800080"}, {"source": "systemd-udevd-kernel.socket", "target": "sockets.target", "type": "Before", "color": "#800080"}, {"source": "systemd-udevd-control.socket", "target": "sockets.target", "type": "Before", "color": "#800080"}, {"source": "systemd-sysusers.service", "target": "systemd-remount-fs.service", "type": "After", "color": "#008000"}, {"source": "systemd-sysusers.service", "target": "systemd-tmpfiles-setup-dev-early.service", "type": "After", "color": "#008000"}, {"source": "systemd-sysusers.service", "target": "systemd-tmpfiles-setup-dev.service", "type": "Before", "color": "#800080"}, {"source": "systemd-sysusers.service", "target": "sysinit.target", "type": "Before", "color": "#800080"}, {"source": "systemd-sysusers.service", "target": "systemd-update-done.service", "type": "Before", "color": "#800080"}, {"source": "systemd-sysusers.service", "target": "shutdown.target", "type": "Before", "color": "#800080"}, {"source": "systemd-sysusers.service", "target": "initrd-switch-root.target", "type": "Before", "color": "#800080"}, {"source": "systemd-hwdb-update.service", "target": "systemd-remount-fs.service", "type": "After", "color": "#008000"}, {"source": "systemd-hwdb-update.service", "target": "sysinit.target", "type": "Before", "color": "#800080"}, {"source": "systemd-hwdb-update.service", "target": "systemd-update-done.service", "type": "Before", "color": "#800080"}, {"source": "systemd-hwdb-update.service", "target": "shutdown.target", "type": "Before", "color": "#800080"}, {"source": "systemd-remount-fs.service", "target": "local-fs-pre.target", "type": "Wants", "color": "#0000FF"}, {"source": "systemd-remount-fs.service", "target": "systemd-fsck-root.service", "type": "After", "color": "#008000"}, {"source": "systemd-remount-fs.service", "target": "local-fs-pre.target", "type": "Before", "color": "#800080"}, {"source": "systemd-remount-fs.service", "target": "local-fs.target", "type": "Before", "color": "#800080"}, {"source": "systemd-remount-fs.service", "target": "shutdown.target", "type": "Before", "color": "#800080"}, {"source": "systemd-tmpfiles-setup-dev-early.service", "target": "local-fs-pre.target", "type": "Wants", "color": "#0000FF"}, {"source": "systemd-tmpfiles-setup-dev-early.service", "target": "sysinit.target", "type": "Before", "color": "#800080"}, {"source": "systemd-tmpfiles-setup-dev-early.service", "target": "local-fs-pre.target", "type": "Before", "color": "#800080"}, {"source": "systemd-tmpfiles-setup-dev-early.service", "target": "systemd-udevd.service", "type": "Before", "color": "#800080"}, {"source": "systemd-tmpfiles-setup-dev-early.service", "target": "shutdown.target", "type": "Before", "color": "#800080"}, {"source": "systemd-tmpfiles-setup-dev-early.service", "target": "initrd-switch-root.target", "type": "Before", "color": "#800080"}, {"source": "systemd-tmpfiles-setup-dev.service", "target": "local-fs-pre.target", "type": "Wants", "color": "#0000FF"}, {"source": "systemd-tmpfiles-setup-dev.service", "target": "systemd-tmpfiles-setup-dev-early.service", "type": "After", "color": "#008000"}, {"source": "systemd-tmpfiles-setup-dev.service", "target": "sysinit.target", "type": "Before", "color": "#800080"}, {"source": "systemd-tmpfiles-setup-dev.service", "target": "local-fs-pre.target", "type": "Before", "color": "#800080"}, {"source": "systemd-tmpfiles-setup-dev.service", "target": "systemd-udevd.service", "type": "Before", "color": "#800080"}, {"source": "systemd-tmpfiles-setup-dev.service", "target": "shutdown.target", "type": "Before", "color": "#800080"}, {"source": "systemd-tmpfiles-setup-dev.service", "target": "initrd-switch-root.target", "type": "Before", "color": "#800080"}, {"source": "systemd-update-done.service", "target": "local-fs.target", "type": "After", "color": "#008000"}, {"source": "systemd-update-done.service", "target": "sysinit.target", "type": "Before", "color": "#800080"}, {"source": "systemd-update-done.service", "target": "shutdown.target", "type": "Before", "color": "#800080"}, {"source": "initrd-switch-root.target", "target": "initrd-switch-root.service", "type": "Wants", "color": "#0000FF"}, {"source": "initrd-switch-root.target", "target": "initrd-udevadm-cleanup-db.service", "type": "Wants", "color": "#0000FF"}, {"source": "initrd-switch-root.target", "target": "initrd-root-fs.target", "type": "Wants", "color": "#0000FF"}, {"source": "initrd-switch-root.target", "target": "initrd-fs.target", "type": "Wants", "color": "#0000FF"}, {"source": "initrd-switch-root.target", "target": "systemd-journald.service", "type": "Wants", "color": "#0000FF"}, {"source": "initrd-switch-root.target", "target": "initrd-cleanup.service", "type": "Wants", "color": "#0000FF"}, {"source": "initrd-switch-root.target", "target": "initrd-udevadm-cleanup-db.service", "type": "After", "color": "#008000"}, {"source": "initrd-switch-root.target", "target": "initrd-root-fs.target", "type": "After", "color": "#008000"}, {"source": "initrd-switch-root.target", "target": "initrd-fs.target", "type": "After", "color": "#008000"}, {"source": "initrd-switch-root.target", "target": "emergency.service", "type": "After", "color": "#008000"}, {"source": "initrd-switch-root.target", "target": "emergency.target", "type": "After", "color": "#008000"}, {"source": "initrd-switch-root.target", "target": "initrd-cleanup.service", "type": "After", "color": "#008000"}, {"source": "initrd-switch-root.target", "target": "initrd-switch-root.service", "type": "Before", "color": "#800080"}, {"source": "systemd-fsck-root.service", "target": "systemd-fsckd.socket", "type": "Wants", "color": "#0000FF"}, {"source": "systemd-fsck-root.service", "target": "systemd-fsckd.socket", "type": "After", "color": "#008000"}, {"source": "systemd-fsck-root.service", "target": "local-fs.target", "type": "Before", "color": "#800080"}, {"source": "systemd-fsck-root.service", "target": "shutdown.target", "type": "Before", "color": "#800080"}, {"source": "initrd-switch-root.service", "target": "initrd-switch-root.target", "type": "Wants", "color": "#0000FF"}, {"source": "initrd-udevadm-cleanup-db.service", "target": "systemd-udevd.service", "type": "After", "color": "#008000"}, {"source": "initrd-udevadm-cleanup-db.service", "target": "systemd-udevd-control.socket", "type": "After", "color": "#008000"}, {"source": "initrd-udevadm-cleanup-db.service", "target": "systemd-udevd-kernel.socket", "type": "After", "color": "#008000"}, {"source": "initrd-udevadm-cleanup-db.service", "target": "systemd-udev-trigger.service", "type": "After", "color": "#008000"}, {"source": "initrd-udevadm-cleanup-db.service", "target": "systemd-udev-settle.service", "type": "After", "color": "#008000"}, {"source": "initrd-udevadm-cleanup-db.service", "target": "initrd-switch-root.target", "type": "Before", "color": "#800080"}, {"source": "initrd-fs.target", "target": "initrd-parse-etc.service", "type": "After", "color": "#008000"}, {"source": "systemd-journald.service", "target": "systemd-journald.socket", "type": "Requires", "color": "#FF0000"}, {"source": "systemd-journald.service", "target": "systemd-journald.socket", "type": "After", "color": "#008000"}, {"source": "systemd-journald.service", "target": "systemd-journald-dev-log.socket", "type": "After", "color": "#008000"}, {"source": "systemd-journald.service", "target": "systemd-journald-audit.socket", "type": "After", "color": "#008000"}, {"source": "systemd-journald.service", "target": "syslog.socket", "type": "After", "color": "#008000"}, {"source": "systemd-journald.service", "target": "sysinit.target", "type": "Before", "color": "#800080"}, {"source": "systemd-journald.service", "target": "soft-reboot.target", "type": "Before", "color": "#800080"}, {"source": "initrd-cleanup.service", "target": "initrd-root-fs.target", "type": "After", "color": "#008000"}, {"source": "initrd-cleanup.service", "target": "initrd-fs.target", "type": "After", "color": "#008000"}, {"source": "initrd-cleanup.service", "target": "initrd.target", "type": "After", "color": "#008000"}, {"source": "systemd-udev-settle.service", "target": "systemd-udevd.service", "type": "Wants", "color": "#0000FF"}, {"source": "systemd-udev-settle.service", "target": "systemd-udev-trigger.service", "type": "After", "color": "#008000"}, {"source": "systemd-udev-settle.service", "target": "sysinit.target", "type": "Before", "color": "#800080"}, {"source": "initrd-parse-etc.service", "target": "initrd-root-fs.target", "type": "Requires", "color": "#FF0000"}, {"source": "initrd-parse-etc.service", "target": "initrd-root-fs.target", "type": "After", "color": "#008000"}, {"source": "systemd-journald.socket", "target": "sockets.target", "type": "Before", "color": "#800080"}, {"source": "systemd-journald-dev-log.socket", "target": "sockets.target", "type": "Before", "color": "#800080"}, {"source": "systemd-journald-audit.socket", "target": "sockets.target", "type": "Before", "color": "#800080"}, {"source": "sockets.target", "target": "systemd-journald-audit.socket", "type": "Wants", "color": "#0000FF"}, {"source": "systemd-journald.service", "target": "systemd-journald-audit.socket", "type": "Wants", "color": "#0000FF"}, {"source": "syslog.socket", "target": "sockets.target", "type": "Before", "color": "#800080"}, {"source": "syslog.socket", "target": "shutdown.target", "type": "Before", "color": "#800080"}, {"source": "syslog.socket", "target": "emergency.service", "type": "Before", "color": "#800080"}, {"source": "soft-reboot.target", "target": "systemd-soft-reboot.service", "type": "Requires", "color": "#FF0000"}, {"source": "soft-reboot.target", "target": "systemd-soft-reboot.service", "type": "After", "color": "#008000"}, {"source": "initrd.target", "target": "basic.target", "type": "Requires", "color": "#FF0000"}, {"source": "initrd.target", "target": "initrd-root-fs.target", "type": "Wants", "color": "#0000FF"}, {"source": "initrd.target", "target": "initrd-root-device.target", "type": "Wants", "color": "#0000FF"}, {"source": "initrd.target", "target": "initrd-fs.target", "type": "Wants", "color": "#0000FF"}, {"source": "initrd.target", "target": "initrd-usr-fs.target", "type": "Wants", "color": "#0000FF"}, {"source": "initrd.target", "target": "initrd-parse-etc.service", "type": "Wants", "color": "#0000FF"}, {"source": "initrd.target", "target": "initrd-root-fs.target", "type": "After", "color": "#008000"}, {"source": "initrd.target", "target": "initrd-root-device.target", "type": "After", "color": "#008000"}, {"source": "initrd.target", "target": "initrd-fs.target", "type": "After", "color": "#008000"}, {"source": "initrd.target", "target": "initrd-usr-fs.target", "type": "After", "color": "#008000"}, {"source": "initrd.target", "target": "basic.target", "type": "After", "color": "#008000"}, {"source": "initrd.target", "target": "rescue.service", "type": "After", "color": "#008000"}, {"source": "initrd.target", "target": "rescue.target", "type": "After", "color": "#008000"}, {"source": "systemd-soft-reboot.service", "target": "shutdown.target", "type": "Requires", "color": "#FF0000"}, {"source": "systemd-soft-reboot.service", "target": "umount.target", "type": "Requires", "color": "#FF0000"}, {"source": "systemd-soft-reboot.service", "target": "final.target", "type": "Requires", "color": "#FF0000"}, {"source": "systemd-soft-reboot.service", "target": "shutdown.target", "type": "After", "color": "#008000"}, {"source": "systemd-soft-reboot.service", "target": "umount.target", "type": "After", "color": "#008000"}, {"source": "systemd-soft-reboot.service", "target": "final.target", "type": "After", "color": "#008000"}, {"source": "final.target", "target": "shutdown.target", "type": "After", "color": "#008000"}, {"source": "final.target", "target": "umount.target", "type": "After", "color": "#008000"}, {"source": "multi-user.target", "target": "thermald.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "tat_install.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "unattended-upgrades.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "snapd.recovery-chooser-trigger.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "rsyslog.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "ua-reboot-cmds.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "chrony.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "ssh.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "networkd-dispatcher.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "redis-server.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "containerd.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "open-vm-tools.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "grub-initrd-fallback.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "tat_agent.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "snapd.core-fixup.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "sysstat.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "snapd.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "snapd.apparmor.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "ufw.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "ModemManager.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "snapd.autoimport.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "pollinate.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "secureboot-db.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "grub-common.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "remote-fs.target", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "lxd-installer.socket", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "apport.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "docker.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "e2scrub_reap.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "systemd-networkd.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "mongod.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "dmesg.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "snapd.seeded.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "inetutils-inetd.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "ubuntu-advantage.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "console-setup.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "cron.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "dbus.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "systemd-logind.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "plymouth-quit.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "plymouth-quit-wait.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "getty.target", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "systemd-ask-password-wall.path", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "systemd-user-sessions.service", "type": "Wants", "color": "#0000FF"}, {"source": "multi-user.target", "target": "systemd-update-utmp-runlevel.service", "type": "Wants", "color": "#0000FF"}];
+
+        // Setup
+        const container = document.getElementById('graph-container');
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        const svg = d3.select('#graph-container')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height);
+
+        const g = svg.append('g');
+
+        // Zoom behavior
+        const zoom = d3.zoom()
+            .scaleExtent([0.1, 4])
+            .on('zoom', (event) => {
+                g.attr('transform', event.transform);
+            });
+
+        svg.call(zoom);
+
+        // Zoom controls
+        document.getElementById('zoom-in').addEventListener('click', () => {
+            svg.transition().duration(300).call(zoom.scaleBy, 1.3);
+        });
+
+        document.getElementById('zoom-out').addEventListener('click', () => {
+            svg.transition().duration(300).call(zoom.scaleBy, 0.7);
+        });
+
+        document.getElementById('reset-zoom').addEventListener('click', () => {
+            svg.transition().duration(300).call(zoom.transform, d3.zoomIdentity);
+        });
+
+        // Tooltip
+        const tooltip = d3.select('#tooltip');
+
+        // Simulation
+        const simulation = d3.forceSimulation(nodes)
+            .force('link', d3.forceLink(links).id(d => d.id).distance(100))
+            .force('charge', d3.forceManyBody().strength(-300))
+            .force('center', d3.forceCenter(width / 2, height / 2))
+            .force('collision', d3.forceCollide().radius(30));
+
+        // Links
+        const link = g.append('g')
+            .selectAll('line')
+            .data(links)
+            .join('line')
+            .attr('class', 'link')
+            .attr('stroke', d => d.color)
+            .attr('stroke-dasharray', d => d.type === 'Wants' ? '5,5' : null);
+
+        // Link labels
+        const linkLabel = g.append('g')
+            .selectAll('text')
+            .data(links)
+            .join('text')
+            .attr('class', 'link-label')
+            .text(d => d.type);
+
+        // Nodes
+        const node = g.append('g')
+            .selectAll('g')
+            .data(nodes)
+            .join('g')
+            .attr('class', 'node')
+            .call(d3.drag()
+                .on('start', dragstarted)
+                .on('drag', dragged)
+                .on('end', dragended));
+
+        // Node rectangles
+        node.append('rect')
+            .attr('width', d => Math.max(d.id.length * 8 + 10, 60))
+            .attr('height', 30)
+            .attr('fill', d => d.color)
+            .attr('rx', 5)
+            .attr('ry', 5);
+
+        // Node text
+        node.append('text')
+            .attr('x', d => (Math.max(d.id.length * 8 + 10, 60)) / 2)
+            .attr('y', 18)
+            .attr('text-anchor', 'middle')
+            .attr('fill', 'white')
+            .text(d => d.id.length > 20 ? d.id.substring(0, 18) + '...' : d.id);
+
+        // Tooltip events
+        node.on('mouseover', (event, d) => {
+            tooltip
+                .style('display', 'block')
+                .style('left', (event.pageX + 10) + 'px')
+                .style('top', (event.pageY - 10) + 'px')
+                .html(`<strong>${d.id}</strong><br>Type: ${d.type}<br>${d.description || 'No description'}`);
+        })
+        .on('mousemove', (event) => {
+            tooltip
+                .style('left', (event.pageX + 10) + 'px')
+                .style('top', (event.pageY - 10) + 'px');
+        })
+        .on('mouseout', () => {
+            tooltip.style('display', 'none');
+        });
+
+        // Tick function
+        simulation.on('tick', () => {
+            link
+                .attr('x1', d => d.source.x)
+                .attr('y1', d => d.source.y)
+                .attr('x2', d => d.target.x)
+                .attr('y2', d => d.target.y);
+
+            linkLabel
+                .attr('x', d => (d.source.x + d.target.x) / 2)
+                .attr('y', d => (d.source.y + d.target.y) / 2);
+
+            node.attr('transform', d => `translate(${d.x - Math.max(d.id.length * 8 + 10, 60) / 2}, ${d.y - 15})`);
+        });
+
+        // Drag functions
+        function dragstarted(event) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            event.subject.fx = event.subject.x;
+            event.subject.fy = event.subject.y;
+        }
+
+        function dragged(event) {
+            event.subject.fx = event.x;
+            event.subject.fy = event.y;
+        }
+
+        function dragended(event) {
+            if (!event.active) simulation.alphaTarget(0);
+            event.subject.fx = null;
+            event.subject.fy = null;
+        }
+    </script>
+</body>
+</html>
