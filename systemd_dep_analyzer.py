@@ -161,126 +161,151 @@ class SystemdDependencyAnalyzer:
             pass
         return units
 
+    def scan_wants_directories_for_units(self) -> Set[str]:
+        """Scan .wants directories and return all unit names found."""
+        found_units = set()
+        
+        for path in self.unit_paths:
+            if not os.path.exists(path):
+                continue
+
+            # Check for target-specific .wants directories
+            target_wants = os.path.join(path, f'{self.target}.wants')
+            if os.path.exists(target_wants) and os.path.isdir(target_wants):
+                for unit_name in os.listdir(target_wants):
+                    found_units.add(unit_name)
+
+            # Also check multi-user.target.wants as it's commonly used
+            if self.target != 'multi-user.target':
+                multiuser_wants = os.path.join(path, 'multi-user.target.wants')
+                if os.path.exists(multiuser_wants) and os.path.isdir(multiuser_wants):
+                    for unit_name in os.listdir(multiuser_wants):
+                        found_units.add(unit_name)
+        
+        return found_units
+
+    def process_unit(self, unit_name: str, visited: Set[str], queue: List[str], all_systemctl_units: Set[str]):
+        """Process a single unit and its dependencies."""
+        if unit_name in visited:
+            return
+
+        visited.add(unit_name)
+
+        # Find unit file
+        unit_path = self.find_unit_file(unit_name)
+
+        # If not found in paths, check if it's from systemctl
+        if not unit_path and unit_name in all_systemctl_units:
+            # Try to get path from systemctl
+            try:
+                result = subprocess.run(
+                    ['systemctl', 'show', unit_name, '--property=FragmentPath', '--value'],
+                    capture_output=True,
+                    text=True,
+                    check=False
+                )
+                path = result.stdout.strip()
+                if path and os.path.exists(path):
+                    unit_path = path
+            except Exception:
+                pass
+
+        if unit_path:
+            unit_info = self.parse_unit_file(unit_path)
+            self.units[unit_name] = unit_info
+
+            # Handle aliases - if this unit has aliases, register them
+            for alias in unit_info['alias']:
+                if alias not in self.units:
+                    self.units[alias] = {
+                        'name': alias,
+                        'path': unit_path,
+                        'type': self.get_unit_type(alias),
+                        'requires': [],
+                        'wants': [],
+                        'after': [],
+                        'before': [],
+                        'requisite': [],
+                        'conflicts': [],
+                        'partof': [],
+                        'binds_to': [],
+                        'wanted_by': [],
+                        'required_by': [],
+                        'alias': [],
+                        'description': f'Alias for {unit_name}',
+                    }
+                self.relationships.append((alias, unit_name, 'Alias'))
+                if alias not in visited:
+                    queue.append(alias)
+
+            # Collect all forward dependencies
+            deps = []
+            for dep in unit_info['requires']:
+                deps.append((dep, 'Requires'))
+            for dep in unit_info['wants']:
+                deps.append((dep, 'Wants'))
+            for dep in unit_info['after']:
+                deps.append((dep, 'After'))
+            for dep in unit_info['before']:
+                deps.append((dep, 'Before'))
+            for dep in unit_info['requisite']:
+                deps.append((dep, 'Requisite'))
+            for dep in unit_info['partof']:
+                deps.append((dep, 'PartOf'))
+            for dep in unit_info['binds_to']:
+                deps.append((dep, 'BindsTo'))
+
+            # Add forward dependencies to graph
+            for dep_name, rel_type in deps:
+                self.relationships.append((unit_name, dep_name, rel_type))
+                if dep_name not in visited:
+                    queue.append(dep_name)
+
+            # Handle WantedBy and RequiredBy - these are reverse dependencies
+            for wanted_by in unit_info['wanted_by']:
+                self.relationships.append((wanted_by, unit_name, 'Wants'))
+                if wanted_by not in visited:
+                    queue.append(wanted_by)
+
+            for required_by in unit_info['required_by']:
+                self.relationships.append((required_by, unit_name, 'Requires'))
+                if required_by not in visited:
+                    queue.append(required_by)
+        else:
+            self.units[unit_name] = {
+                'name': unit_name,
+                'path': None,
+                'type': self.get_unit_type(unit_name),
+                'requires': [],
+                'wants': [],
+                'after': [],
+                'before': [],
+                'requisite': [],
+                'conflicts': [],
+                'partof': [],
+                'binds_to': [],
+                'wanted_by': [],
+                'required_by': [],
+                'alias': [],
+                'description': 'Unit file not found',
+            }
+
     def build_dependency_graph(self):
         """Build the dependency graph starting from the target."""
         visited = set()
         queue = [self.target]
 
-        # Get all units from systemctl
         all_systemctl_units = self.get_all_units_from_systemctl()
+
+        wants_units = self.scan_wants_directories_for_units()
+        for unit_name in wants_units:
+            if unit_name not in visited:
+                queue.append(unit_name)
 
         while queue:
             unit_name = queue.pop(0)
-            if unit_name in visited:
-                continue
+            self.process_unit(unit_name, visited, queue, all_systemctl_units)
 
-            visited.add(unit_name)
-
-            # Find unit file
-            unit_path = self.find_unit_file(unit_name)
-
-            # If not found in paths, check if it's from systemctl
-            if not unit_path and unit_name in all_systemctl_units:
-                # Try to get path from systemctl
-                try:
-                    result = subprocess.run(
-                        ['systemctl', 'show', unit_name, '--property=FragmentPath', '--value'],
-                        capture_output=True,
-                        text=True,
-                        check=False
-                    )
-                    path = result.stdout.strip()
-                    if path and os.path.exists(path):
-                        unit_path = path
-                except Exception:
-                    pass
-
-            if unit_path:
-                unit_info = self.parse_unit_file(unit_path)
-                self.units[unit_name] = unit_info
-
-                # Handle aliases - if this unit has aliases, register them
-                for alias in unit_info['alias']:
-                    # Add the alias as a separate node that points to the actual unit
-                    # In systemd, alias is like a symlink, so we treat it similarly
-                    if alias not in self.units:
-                        self.units[alias] = {
-                            'name': alias,
-                            'path': unit_path,
-                            'type': self.get_unit_type(alias),
-                            'requires': [],
-                            'wants': [],
-                            'after': [],
-                            'before': [],
-                            'requisite': [],
-                            'conflicts': [],
-                            'partof': [],
-                            'binds_to': [],
-                            'wanted_by': [],
-                            'required_by': [],
-                            'alias': [],
-                            'description': f'Alias for {unit_name}',
-                        }
-                    # Add relationship from alias to actual unit
-                    self.relationships.append((alias, unit_name, 'Alias'))
-                    if alias not in visited:
-                        queue.append(alias)
-
-                # Collect all forward dependencies
-                deps = []
-                for dep in unit_info['requires']:
-                    deps.append((dep, 'Requires'))
-                for dep in unit_info['wants']:
-                    deps.append((dep, 'Wants'))
-                for dep in unit_info['after']:
-                    deps.append((dep, 'After'))
-                for dep in unit_info['before']:
-                    deps.append((dep, 'Before'))
-                for dep in unit_info['requisite']:
-                    deps.append((dep, 'Requisite'))
-                for dep in unit_info['partof']:
-                    deps.append((dep, 'PartOf'))
-                for dep in unit_info['binds_to']:
-                    deps.append((dep, 'BindsTo'))
-
-                # Add forward dependencies to graph
-                for dep_name, rel_type in deps:
-                    self.relationships.append((unit_name, dep_name, rel_type))
-                    if dep_name not in visited:
-                        queue.append(dep_name)
-
-                # Handle WantedBy and RequiredBy - these are reverse dependencies
-                # If unit A has WantedBy=target B, that means B Wants A
-                for wanted_by in unit_info['wanted_by']:
-                    self.relationships.append((wanted_by, unit_name, 'Wants'))
-                    if wanted_by not in visited:
-                        queue.append(wanted_by)
-
-                for required_by in unit_info['required_by']:
-                    self.relationships.append((required_by, unit_name, 'Requires'))
-                    if required_by not in visited:
-                        queue.append(required_by)
-            else:
-                # Unit not found, add placeholder
-                self.units[unit_name] = {
-                    'name': unit_name,
-                    'path': None,
-                    'type': self.get_unit_type(unit_name),
-                    'requires': [],
-                    'wants': [],
-                    'after': [],
-                    'before': [],
-                    'requisite': [],
-                    'conflicts': [],
-                    'partof': [],
-                    'binds_to': [],
-                    'wanted_by': [],
-                    'required_by': [],
-                    'alias': [],
-                    'description': 'Unit file not found',
-                }
-
-        # Also scan for units in .wants directories
         self.scan_wants_directories()
 
     def scan_wants_directories(self):
