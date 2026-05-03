@@ -1,0 +1,4721 @@
+{
+  "units": [
+    "multi-user.target",
+    "thermald.service",
+    "dbus-org.freedesktop.thermald.service",
+    "tat_install.service",
+    "unattended-upgrades.service",
+    "snapd.recovery-chooser-trigger.service",
+    "rsyslog.service",
+    "syslog.service",
+    "ua-reboot-cmds.service",
+    "chrony.service",
+    "chronyd.service",
+    "ssh.service",
+    "sshd.service",
+    "networkd-dispatcher.service",
+    "redis-server.service",
+    "redis.service",
+    "containerd.service",
+    "open-vm-tools.service",
+    "vmtoolsd.service",
+    "grub-initrd-fallback.service",
+    "tat_agent.service",
+    "snapd.core-fixup.service",
+    "sysstat.service",
+    "snapd.service",
+    "snapd.apparmor.service",
+    "ufw.service",
+    "ModemManager.service",
+    "dbus-org.freedesktop.ModemManager1.service",
+    "snapd.autoimport.service",
+    "pollinate.service",
+    "secureboot-db.service",
+    "grub-common.service",
+    "remote-fs.target",
+    "lxd-installer.socket",
+    "apport.service",
+    "docker.service",
+    "e2scrub_reap.service",
+    "systemd-networkd.service",
+    "mongod.service",
+    "dmesg.service",
+    "snapd.seeded.service",
+    "inetutils-inetd.service",
+    "inetd.service",
+    "ubuntu-advantage.service",
+    "console-setup.service",
+    "cron.service",
+    "dbus.service",
+    "systemd-logind.service",
+    "plymouth-quit.service",
+    "plymouth-quit-wait.service",
+    "getty.target",
+    "systemd-ask-password-wall.path",
+    "systemd-user-sessions.service",
+    "systemd-update-utmp-runlevel.service",
+    "basic.target",
+    "rescue.service",
+    "rescue.target",
+    "sysinit.target",
+    "shutdown.target",
+    "network.target",
+    "local-fs.target",
+    "getty-pre.target",
+    "syslog.socket",
+    "time-sync.target",
+    "vgauth.service",
+    "apparmor.service",
+    "systemd-remount-fs.service",
+    "systemd-tmpfiles-setup.service",
+    "systemd-modules-load.service",
+    "cloud-init-local.service",
+    "sleep.target",
+    "emergency.target",
+    "network-online.target",
+    "snapd.socket",
+    "time-set.target",
+    "snapd.mounts.target",
+    "network-pre.target",
+    "polkit.service",
+    "suspend.target",
+    "hibernate.target",
+    "hybrid-sleep.target",
+    "suspend-then-hibernate.target",
+    "remote-fs-pre.target",
+    "sockets.target",
+    "docker.socket",
+    "nss-lookup.target",
+    "systemd-networkd.socket",
+    "systemd-udevd.service",
+    "systemd-sysusers.service",
+    "systemd-sysctl.service",
+    "initrd-switch-root.target",
+    "cloud-final.service",
+    "nss-user-lookup.target",
+    "dbus.socket",
+    "user.slice",
+    "modprobe@drm.service",
+    "rc-local.service",
+    "plymouth-start.service",
+    "paths.target",
+    "cryptsetup.target",
+    "emergency.service",
+    "systemd-update-utmp.service",
+    "runlevel1.target",
+    "runlevel2.target",
+    "runlevel3.target",
+    "runlevel4.target",
+    "runlevel5.target",
+    "timers.target",
+    "slices.target",
+    "swap.target",
+    "local-fs-pre.target",
+    "systemd-journald-audit.socket",
+    "systemd-fsck-root.service",
+    "systemd-journald.service",
+    "cloud-init.target",
+    "snapd.mounts-pre.target",
+    "systemd-suspend.service",
+    "systemd-hibernate.service",
+    "systemd-hybrid-sleep.service",
+    "systemd-suspend-then-hibernate.service",
+    "systemd-hwdb-update.service",
+    "systemd-tmpfiles-setup-dev-early.service",
+    "systemd-tmpfiles-setup-dev.service",
+    "systemd-update-done.service",
+    "initrd-switch-root.service",
+    "initrd-udevadm-cleanup-db.service",
+    "initrd-root-fs.target",
+    "initrd-fs.target",
+    "initrd-cleanup.service",
+    "cloud-config.service",
+    "apt-daily.service",
+    "systemd-ask-password-plymouth.path",
+    "systemd-udev-trigger.service",
+    "keyboard-setup.service",
+    "systemd-ask-password-plymouth.service",
+    "systemd-fsckd.socket",
+    "systemd-journald.socket",
+    "systemd-journald-dev-log.socket",
+    "soft-reboot.target",
+    "systemd-udevd-control.socket",
+    "systemd-udevd-kernel.socket",
+    "systemd-udev-settle.service",
+    "initrd-parse-etc.service",
+    "initrd.target",
+    "cloud-config.target",
+    "systemd-soft-reboot.service",
+    "initrd-root-device.target",
+    "initrd-usr-fs.target",
+    "cloud-init.service",
+    "umount.target",
+    "final.target",
+    "systemd-networkd-wait-online.service"
+  ],
+  "relationships": [
+    {
+      "source": "multi-user.target",
+      "target": "basic.target",
+      "type": "Requires"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "rescue.service",
+      "type": "After"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "rescue.target",
+      "type": "After"
+    },
+    {
+      "source": "dbus-org.freedesktop.thermald.service",
+      "target": "thermald.service",
+      "type": "Alias"
+    },
+    {
+      "source": "thermald.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "thermald.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "thermald.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "thermald.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "thermald.service",
+      "type": "Wants"
+    },
+    {
+      "source": "tat_install.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "tat_install.service",
+      "target": "network.target",
+      "type": "After"
+    },
+    {
+      "source": "tat_install.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "tat_install.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "tat_install.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "tat_install.service",
+      "type": "Wants"
+    },
+    {
+      "source": "unattended-upgrades.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "unattended-upgrades.service",
+      "target": "network.target",
+      "type": "After"
+    },
+    {
+      "source": "unattended-upgrades.service",
+      "target": "local-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "unattended-upgrades.service",
+      "target": "systemd-logind.service",
+      "type": "After"
+    },
+    {
+      "source": "unattended-upgrades.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "unattended-upgrades.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "unattended-upgrades.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "unattended-upgrades.service",
+      "type": "Wants"
+    },
+    {
+      "source": "snapd.recovery-chooser-trigger.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "snapd.recovery-chooser-trigger.service",
+      "target": "getty-pre.target",
+      "type": "Wants"
+    },
+    {
+      "source": "snapd.recovery-chooser-trigger.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "snapd.recovery-chooser-trigger.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "snapd.recovery-chooser-trigger.service",
+      "target": "getty-pre.target",
+      "type": "Before"
+    },
+    {
+      "source": "snapd.recovery-chooser-trigger.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "snapd.recovery-chooser-trigger.service",
+      "type": "Wants"
+    },
+    {
+      "source": "syslog.service",
+      "target": "rsyslog.service",
+      "type": "Alias"
+    },
+    {
+      "source": "rsyslog.service",
+      "target": "syslog.socket",
+      "type": "Requires"
+    },
+    {
+      "source": "rsyslog.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "rsyslog.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "rsyslog.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "rsyslog.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "rsyslog.service",
+      "type": "Wants"
+    },
+    {
+      "source": "ua-reboot-cmds.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "ua-reboot-cmds.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "ua-reboot-cmds.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "ua-reboot-cmds.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "ua-reboot-cmds.service",
+      "type": "Wants"
+    },
+    {
+      "source": "chronyd.service",
+      "target": "chrony.service",
+      "type": "Alias"
+    },
+    {
+      "source": "chrony.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "chrony.service",
+      "target": "time-sync.target",
+      "type": "Wants"
+    },
+    {
+      "source": "chrony.service",
+      "target": "network.target",
+      "type": "After"
+    },
+    {
+      "source": "chrony.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "chrony.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "chrony.service",
+      "target": "time-sync.target",
+      "type": "Before"
+    },
+    {
+      "source": "chrony.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "chrony.service",
+      "type": "Wants"
+    },
+    {
+      "source": "sshd.service",
+      "target": "ssh.service",
+      "type": "Alias"
+    },
+    {
+      "source": "ssh.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "ssh.service",
+      "target": "network.target",
+      "type": "After"
+    },
+    {
+      "source": "ssh.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "ssh.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "ssh.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "ssh.service",
+      "type": "Wants"
+    },
+    {
+      "source": "networkd-dispatcher.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "networkd-dispatcher.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "networkd-dispatcher.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "networkd-dispatcher.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "networkd-dispatcher.service",
+      "type": "Wants"
+    },
+    {
+      "source": "redis.service",
+      "target": "redis-server.service",
+      "type": "Alias"
+    },
+    {
+      "source": "redis-server.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "redis-server.service",
+      "target": "network.target",
+      "type": "After"
+    },
+    {
+      "source": "redis-server.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "redis-server.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "redis-server.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "redis-server.service",
+      "type": "Wants"
+    },
+    {
+      "source": "containerd.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "containerd.service",
+      "target": "network.target",
+      "type": "After"
+    },
+    {
+      "source": "containerd.service",
+      "target": "dbus.service",
+      "type": "After"
+    },
+    {
+      "source": "containerd.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "containerd.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "containerd.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "containerd.service",
+      "type": "Wants"
+    },
+    {
+      "source": "vmtoolsd.service",
+      "target": "open-vm-tools.service",
+      "type": "Alias"
+    },
+    {
+      "source": "open-vm-tools.service",
+      "target": "vgauth.service",
+      "type": "After"
+    },
+    {
+      "source": "open-vm-tools.service",
+      "target": "apparmor.service",
+      "type": "After"
+    },
+    {
+      "source": "open-vm-tools.service",
+      "target": "systemd-remount-fs.service",
+      "type": "After"
+    },
+    {
+      "source": "open-vm-tools.service",
+      "target": "systemd-tmpfiles-setup.service",
+      "type": "After"
+    },
+    {
+      "source": "open-vm-tools.service",
+      "target": "systemd-modules-load.service",
+      "type": "After"
+    },
+    {
+      "source": "open-vm-tools.service",
+      "target": "cloud-init-local.service",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "open-vm-tools.service",
+      "type": "Wants"
+    },
+    {
+      "source": "grub-initrd-fallback.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "grub-initrd-fallback.service",
+      "target": "local-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "grub-initrd-fallback.service",
+      "target": "grub-common.service",
+      "type": "After"
+    },
+    {
+      "source": "grub-initrd-fallback.service",
+      "target": "sleep.target",
+      "type": "After"
+    },
+    {
+      "source": "grub-initrd-fallback.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "grub-initrd-fallback.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "grub-initrd-fallback.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "grub-initrd-fallback.service",
+      "type": "Wants"
+    },
+    {
+      "source": "rescue.target",
+      "target": "grub-initrd-fallback.service",
+      "type": "Wants"
+    },
+    {
+      "source": "emergency.target",
+      "target": "grub-initrd-fallback.service",
+      "type": "Wants"
+    },
+    {
+      "source": "sleep.target",
+      "target": "grub-initrd-fallback.service",
+      "type": "Wants"
+    },
+    {
+      "source": "tat_agent.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "tat_agent.service",
+      "target": "network-online.target",
+      "type": "After"
+    },
+    {
+      "source": "tat_agent.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "tat_agent.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "tat_agent.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "tat_agent.service",
+      "type": "Wants"
+    },
+    {
+      "source": "snapd.core-fixup.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "snapd.core-fixup.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "snapd.core-fixup.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "snapd.core-fixup.service",
+      "target": "snapd.service",
+      "type": "Before"
+    },
+    {
+      "source": "snapd.core-fixup.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "snapd.core-fixup.service",
+      "type": "Wants"
+    },
+    {
+      "source": "sysstat.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "sysstat.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "sysstat.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "sysstat.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "sysstat.service",
+      "type": "Wants"
+    },
+    {
+      "source": "snapd.service",
+      "target": "snapd.socket",
+      "type": "Requires"
+    },
+    {
+      "source": "snapd.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "snapd.service",
+      "target": "time-set.target",
+      "type": "Wants"
+    },
+    {
+      "source": "snapd.service",
+      "target": "snapd.mounts.target",
+      "type": "Wants"
+    },
+    {
+      "source": "snapd.service",
+      "target": "snapd.socket",
+      "type": "After"
+    },
+    {
+      "source": "snapd.service",
+      "target": "time-set.target",
+      "type": "After"
+    },
+    {
+      "source": "snapd.service",
+      "target": "snapd.mounts.target",
+      "type": "After"
+    },
+    {
+      "source": "snapd.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "snapd.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "snapd.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "snapd.service",
+      "type": "Wants"
+    },
+    {
+      "source": "snapd.apparmor.service",
+      "target": "snapd.mounts.target",
+      "type": "Wants"
+    },
+    {
+      "source": "snapd.apparmor.service",
+      "target": "apparmor.service",
+      "type": "After"
+    },
+    {
+      "source": "snapd.apparmor.service",
+      "target": "snapd.mounts.target",
+      "type": "After"
+    },
+    {
+      "source": "snapd.apparmor.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "snapd.apparmor.service",
+      "type": "Wants"
+    },
+    {
+      "source": "ufw.service",
+      "target": "network-pre.target",
+      "type": "Wants"
+    },
+    {
+      "source": "ufw.service",
+      "target": "local-fs.target",
+      "type": "Wants"
+    },
+    {
+      "source": "ufw.service",
+      "target": "local-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "ufw.service",
+      "target": "network-pre.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "ufw.service",
+      "type": "Wants"
+    },
+    {
+      "source": "dbus-org.freedesktop.ModemManager1.service",
+      "target": "ModemManager.service",
+      "type": "Alias"
+    },
+    {
+      "source": "ModemManager.service",
+      "target": "polkit.service",
+      "type": "Requires"
+    },
+    {
+      "source": "ModemManager.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "ModemManager.service",
+      "target": "polkit.service",
+      "type": "After"
+    },
+    {
+      "source": "ModemManager.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "ModemManager.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "ModemManager.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "ModemManager.service",
+      "type": "Wants"
+    },
+    {
+      "source": "snapd.autoimport.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "snapd.autoimport.service",
+      "target": "snapd.service",
+      "type": "After"
+    },
+    {
+      "source": "snapd.autoimport.service",
+      "target": "snapd.socket",
+      "type": "After"
+    },
+    {
+      "source": "snapd.autoimport.service",
+      "target": "snapd.seeded.service",
+      "type": "After"
+    },
+    {
+      "source": "snapd.autoimport.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "snapd.autoimport.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "snapd.autoimport.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "snapd.autoimport.service",
+      "type": "Wants"
+    },
+    {
+      "source": "pollinate.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "pollinate.service",
+      "target": "network-online.target",
+      "type": "After"
+    },
+    {
+      "source": "pollinate.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "pollinate.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "pollinate.service",
+      "target": "ssh.service",
+      "type": "Before"
+    },
+    {
+      "source": "pollinate.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "pollinate.service",
+      "type": "Wants"
+    },
+    {
+      "source": "secureboot-db.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "secureboot-db.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "secureboot-db.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "secureboot-db.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "secureboot-db.service",
+      "type": "Wants"
+    },
+    {
+      "source": "grub-common.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "grub-common.service",
+      "target": "suspend.target",
+      "type": "After"
+    },
+    {
+      "source": "grub-common.service",
+      "target": "hibernate.target",
+      "type": "After"
+    },
+    {
+      "source": "grub-common.service",
+      "target": "hybrid-sleep.target",
+      "type": "After"
+    },
+    {
+      "source": "grub-common.service",
+      "target": "suspend-then-hibernate.target",
+      "type": "After"
+    },
+    {
+      "source": "grub-common.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "grub-common.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "grub-common.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "grub-common.service",
+      "type": "Wants"
+    },
+    {
+      "source": "suspend.target",
+      "target": "grub-common.service",
+      "type": "Wants"
+    },
+    {
+      "source": "hibernate.target",
+      "target": "grub-common.service",
+      "type": "Wants"
+    },
+    {
+      "source": "hybrid-sleep.target",
+      "target": "grub-common.service",
+      "type": "Wants"
+    },
+    {
+      "source": "suspend-then-hibernate.target",
+      "target": "grub-common.service",
+      "type": "Wants"
+    },
+    {
+      "source": "remote-fs.target",
+      "target": "remote-fs-pre.target",
+      "type": "After"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "remote-fs.target",
+      "type": "Wants"
+    },
+    {
+      "source": "lxd-installer.socket",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "lxd-installer.socket",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "lxd-installer.socket",
+      "target": "sockets.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "lxd-installer.socket",
+      "type": "Wants"
+    },
+    {
+      "source": "apport.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "apport.service",
+      "target": "remote-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "apport.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "apport.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "apport.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "apport.service",
+      "type": "Wants"
+    },
+    {
+      "source": "docker.service",
+      "target": "docker.socket",
+      "type": "Requires"
+    },
+    {
+      "source": "docker.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "docker.service",
+      "target": "network-online.target",
+      "type": "Wants"
+    },
+    {
+      "source": "docker.service",
+      "target": "containerd.service",
+      "type": "Wants"
+    },
+    {
+      "source": "docker.service",
+      "target": "network-online.target",
+      "type": "After"
+    },
+    {
+      "source": "docker.service",
+      "target": "nss-lookup.target",
+      "type": "After"
+    },
+    {
+      "source": "docker.service",
+      "target": "docker.socket",
+      "type": "After"
+    },
+    {
+      "source": "docker.service",
+      "target": "containerd.service",
+      "type": "After"
+    },
+    {
+      "source": "docker.service",
+      "target": "time-set.target",
+      "type": "After"
+    },
+    {
+      "source": "docker.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "docker.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "docker.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "docker.service",
+      "type": "Wants"
+    },
+    {
+      "source": "e2scrub_reap.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "e2scrub_reap.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "e2scrub_reap.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "e2scrub_reap.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "e2scrub_reap.service",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-networkd.service",
+      "target": "systemd-networkd.socket",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-networkd.service",
+      "target": "network.target",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-networkd.service",
+      "target": "systemd-networkd.socket",
+      "type": "After"
+    },
+    {
+      "source": "systemd-networkd.service",
+      "target": "systemd-udevd.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-networkd.service",
+      "target": "network-pre.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-networkd.service",
+      "target": "systemd-sysusers.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-networkd.service",
+      "target": "systemd-sysctl.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-networkd.service",
+      "target": "network.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-networkd.service",
+      "target": "multi-user.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-networkd.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-networkd.service",
+      "target": "initrd-switch-root.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "systemd-networkd.service",
+      "type": "Wants"
+    },
+    {
+      "source": "mongod.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "mongod.service",
+      "target": "network-online.target",
+      "type": "Wants"
+    },
+    {
+      "source": "mongod.service",
+      "target": "network-online.target",
+      "type": "After"
+    },
+    {
+      "source": "mongod.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "mongod.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "mongod.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "mongod.service",
+      "type": "Wants"
+    },
+    {
+      "source": "dmesg.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "dmesg.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "dmesg.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "dmesg.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "dmesg.service",
+      "type": "Wants"
+    },
+    {
+      "source": "snapd.seeded.service",
+      "target": "snapd.socket",
+      "type": "Requires"
+    },
+    {
+      "source": "snapd.seeded.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "snapd.seeded.service",
+      "target": "snapd.socket",
+      "type": "After"
+    },
+    {
+      "source": "snapd.seeded.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "snapd.seeded.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "snapd.seeded.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "snapd.seeded.service",
+      "type": "Wants"
+    },
+    {
+      "source": "cloud-final.service",
+      "target": "snapd.seeded.service",
+      "type": "Wants"
+    },
+    {
+      "source": "inetd.service",
+      "target": "inetutils-inetd.service",
+      "type": "Alias"
+    },
+    {
+      "source": "inetutils-inetd.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "inetutils-inetd.service",
+      "target": "network-online.target",
+      "type": "Wants"
+    },
+    {
+      "source": "inetutils-inetd.service",
+      "target": "remote-fs.target",
+      "type": "Wants"
+    },
+    {
+      "source": "inetutils-inetd.service",
+      "target": "network-online.target",
+      "type": "After"
+    },
+    {
+      "source": "inetutils-inetd.service",
+      "target": "remote-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "inetutils-inetd.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "inetutils-inetd.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "inetutils-inetd.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "inetutils-inetd.service",
+      "type": "Wants"
+    },
+    {
+      "source": "ubuntu-advantage.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "ubuntu-advantage.service",
+      "target": "network.target",
+      "type": "After"
+    },
+    {
+      "source": "ubuntu-advantage.service",
+      "target": "network-online.target",
+      "type": "After"
+    },
+    {
+      "source": "ubuntu-advantage.service",
+      "target": "systemd-networkd.service",
+      "type": "After"
+    },
+    {
+      "source": "ubuntu-advantage.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "ubuntu-advantage.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "ubuntu-advantage.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "ubuntu-advantage.service",
+      "type": "Wants"
+    },
+    {
+      "source": "console-setup.service",
+      "target": "local-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "console-setup.service",
+      "type": "Wants"
+    },
+    {
+      "source": "cron.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "cron.service",
+      "target": "remote-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "cron.service",
+      "target": "nss-user-lookup.target",
+      "type": "After"
+    },
+    {
+      "source": "cron.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "cron.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "cron.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "cron.service",
+      "type": "Wants"
+    },
+    {
+      "source": "dbus.service",
+      "target": "dbus.socket",
+      "type": "Requires"
+    },
+    {
+      "source": "dbus.service",
+      "target": "sysinit.target",
+      "type": "Wants"
+    },
+    {
+      "source": "dbus.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "dbus.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-logind.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "systemd-logind.service",
+      "target": "user.slice",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-logind.service",
+      "target": "modprobe@drm.service",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-logind.service",
+      "target": "dbus.socket",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-logind.service",
+      "target": "nss-user-lookup.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-logind.service",
+      "target": "user.slice",
+      "type": "After"
+    },
+    {
+      "source": "systemd-logind.service",
+      "target": "modprobe@drm.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-logind.service",
+      "target": "dbus.socket",
+      "type": "After"
+    },
+    {
+      "source": "systemd-logind.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-logind.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-logind.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "plymouth-quit.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "plymouth-quit.service",
+      "target": "rc-local.service",
+      "type": "After"
+    },
+    {
+      "source": "plymouth-quit.service",
+      "target": "plymouth-start.service",
+      "type": "After"
+    },
+    {
+      "source": "plymouth-quit.service",
+      "target": "systemd-user-sessions.service",
+      "type": "After"
+    },
+    {
+      "source": "plymouth-quit.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "plymouth-quit.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "plymouth-quit.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "plymouth-quit-wait.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "plymouth-quit-wait.service",
+      "target": "rc-local.service",
+      "type": "After"
+    },
+    {
+      "source": "plymouth-quit-wait.service",
+      "target": "plymouth-start.service",
+      "type": "After"
+    },
+    {
+      "source": "plymouth-quit-wait.service",
+      "target": "systemd-user-sessions.service",
+      "type": "After"
+    },
+    {
+      "source": "plymouth-quit-wait.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "plymouth-quit-wait.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "plymouth-quit-wait.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-ask-password-wall.path",
+      "target": "paths.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-ask-password-wall.path",
+      "target": "cryptsetup.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-ask-password-wall.path",
+      "target": "emergency.service",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-ask-password-wall.path",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-user-sessions.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "systemd-user-sessions.service",
+      "target": "remote-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-user-sessions.service",
+      "target": "nss-user-lookup.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-user-sessions.service",
+      "target": "network.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-user-sessions.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-user-sessions.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-user-sessions.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-update-utmp-runlevel.service",
+      "target": "systemd-update-utmp.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-update-utmp-runlevel.service",
+      "target": "runlevel1.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-update-utmp-runlevel.service",
+      "target": "runlevel2.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-update-utmp-runlevel.service",
+      "target": "runlevel3.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-update-utmp-runlevel.service",
+      "target": "runlevel4.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-update-utmp-runlevel.service",
+      "target": "runlevel5.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-update-utmp-runlevel.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-update-utmp-runlevel.service",
+      "target": "systemd-update-utmp.service",
+      "type": "Requisite"
+    },
+    {
+      "source": "basic.target",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "basic.target",
+      "target": "sockets.target",
+      "type": "Wants"
+    },
+    {
+      "source": "basic.target",
+      "target": "timers.target",
+      "type": "Wants"
+    },
+    {
+      "source": "basic.target",
+      "target": "paths.target",
+      "type": "Wants"
+    },
+    {
+      "source": "basic.target",
+      "target": "slices.target",
+      "type": "Wants"
+    },
+    {
+      "source": "basic.target",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "basic.target",
+      "target": "sockets.target",
+      "type": "After"
+    },
+    {
+      "source": "basic.target",
+      "target": "paths.target",
+      "type": "After"
+    },
+    {
+      "source": "basic.target",
+      "target": "slices.target",
+      "type": "After"
+    },
+    {
+      "source": "rescue.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "rescue.service",
+      "target": "plymouth-start.service",
+      "type": "After"
+    },
+    {
+      "source": "rescue.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "rescue.target",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "rescue.target",
+      "target": "rescue.service",
+      "type": "Requires"
+    },
+    {
+      "source": "rescue.target",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "rescue.target",
+      "target": "rescue.service",
+      "type": "After"
+    },
+    {
+      "source": "dbus-org.freedesktop.thermald.service",
+      "target": "dbus-org.freedesktop.thermald.service",
+      "type": "Alias"
+    },
+    {
+      "source": "dbus-org.freedesktop.thermald.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "dbus-org.freedesktop.thermald.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "dbus-org.freedesktop.thermald.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "dbus-org.freedesktop.thermald.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "dbus-org.freedesktop.thermald.service",
+      "type": "Wants"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "local-fs.target",
+      "type": "Wants"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "swap.target",
+      "type": "Wants"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "local-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "swap.target",
+      "type": "After"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "emergency.service",
+      "type": "Before"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "emergency.target",
+      "type": "Before"
+    },
+    {
+      "source": "network.target",
+      "target": "network-pre.target",
+      "type": "After"
+    },
+    {
+      "source": "local-fs.target",
+      "target": "local-fs-pre.target",
+      "type": "After"
+    },
+    {
+      "source": "syslog.service",
+      "target": "syslog.service",
+      "type": "Alias"
+    },
+    {
+      "source": "syslog.service",
+      "target": "syslog.socket",
+      "type": "Requires"
+    },
+    {
+      "source": "syslog.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "syslog.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "syslog.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "syslog.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "syslog.service",
+      "type": "Wants"
+    },
+    {
+      "source": "syslog.socket",
+      "target": "sockets.target",
+      "type": "Before"
+    },
+    {
+      "source": "syslog.socket",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "syslog.socket",
+      "target": "emergency.service",
+      "type": "Before"
+    },
+    {
+      "source": "chronyd.service",
+      "target": "chronyd.service",
+      "type": "Alias"
+    },
+    {
+      "source": "chronyd.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "chronyd.service",
+      "target": "time-sync.target",
+      "type": "Wants"
+    },
+    {
+      "source": "chronyd.service",
+      "target": "network.target",
+      "type": "After"
+    },
+    {
+      "source": "chronyd.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "chronyd.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "chronyd.service",
+      "target": "time-sync.target",
+      "type": "Before"
+    },
+    {
+      "source": "chronyd.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "chronyd.service",
+      "type": "Wants"
+    },
+    {
+      "source": "time-sync.target",
+      "target": "time-set.target",
+      "type": "Wants"
+    },
+    {
+      "source": "time-sync.target",
+      "target": "time-set.target",
+      "type": "After"
+    },
+    {
+      "source": "sshd.service",
+      "target": "sshd.service",
+      "type": "Alias"
+    },
+    {
+      "source": "sshd.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "sshd.service",
+      "target": "network.target",
+      "type": "After"
+    },
+    {
+      "source": "sshd.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "sshd.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "sshd.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "sshd.service",
+      "type": "Wants"
+    },
+    {
+      "source": "redis.service",
+      "target": "redis.service",
+      "type": "Alias"
+    },
+    {
+      "source": "redis.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "redis.service",
+      "target": "network.target",
+      "type": "After"
+    },
+    {
+      "source": "redis.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "redis.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "redis.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "redis.service",
+      "type": "Wants"
+    },
+    {
+      "source": "vmtoolsd.service",
+      "target": "vmtoolsd.service",
+      "type": "Alias"
+    },
+    {
+      "source": "vmtoolsd.service",
+      "target": "vgauth.service",
+      "type": "After"
+    },
+    {
+      "source": "vmtoolsd.service",
+      "target": "apparmor.service",
+      "type": "After"
+    },
+    {
+      "source": "vmtoolsd.service",
+      "target": "systemd-remount-fs.service",
+      "type": "After"
+    },
+    {
+      "source": "vmtoolsd.service",
+      "target": "systemd-tmpfiles-setup.service",
+      "type": "After"
+    },
+    {
+      "source": "vmtoolsd.service",
+      "target": "systemd-modules-load.service",
+      "type": "After"
+    },
+    {
+      "source": "vmtoolsd.service",
+      "target": "cloud-init-local.service",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "vmtoolsd.service",
+      "type": "Wants"
+    },
+    {
+      "source": "vgauth.service",
+      "target": "systemd-remount-fs.service",
+      "type": "After"
+    },
+    {
+      "source": "vgauth.service",
+      "target": "systemd-tmpfiles-setup.service",
+      "type": "After"
+    },
+    {
+      "source": "vgauth.service",
+      "target": "apparmor.service",
+      "type": "After"
+    },
+    {
+      "source": "vgauth.service",
+      "target": "open-vm-tools.service",
+      "type": "PartOf"
+    },
+    {
+      "source": "open-vm-tools.service",
+      "target": "vgauth.service",
+      "type": "Requires"
+    },
+    {
+      "source": "apparmor.service",
+      "target": "local-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "apparmor.service",
+      "target": "systemd-journald-audit.socket",
+      "type": "After"
+    },
+    {
+      "source": "apparmor.service",
+      "target": "systemd-sysctl.service",
+      "type": "After"
+    },
+    {
+      "source": "apparmor.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "apparmor.service",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-remount-fs.service",
+      "target": "local-fs-pre.target",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-remount-fs.service",
+      "target": "systemd-fsck-root.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-remount-fs.service",
+      "target": "local-fs-pre.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-remount-fs.service",
+      "target": "local-fs.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-remount-fs.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-tmpfiles-setup.service",
+      "target": "local-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-tmpfiles-setup.service",
+      "target": "systemd-sysusers.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-tmpfiles-setup.service",
+      "target": "systemd-journald.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-tmpfiles-setup.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-tmpfiles-setup.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-tmpfiles-setup.service",
+      "target": "initrd-switch-root.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-modules-load.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-modules-load.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "cloud-init-local.service",
+      "target": "network-pre.target",
+      "type": "Wants"
+    },
+    {
+      "source": "cloud-init-local.service",
+      "target": "systemd-remount-fs.service",
+      "type": "After"
+    },
+    {
+      "source": "cloud-init-local.service",
+      "target": "network-pre.target",
+      "type": "Before"
+    },
+    {
+      "source": "cloud-init-local.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "cloud-init-local.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "cloud-init.target",
+      "target": "cloud-init-local.service",
+      "type": "Wants"
+    },
+    {
+      "source": "emergency.target",
+      "target": "emergency.service",
+      "type": "Requires"
+    },
+    {
+      "source": "emergency.target",
+      "target": "emergency.service",
+      "type": "After"
+    },
+    {
+      "source": "network-online.target",
+      "target": "network.target",
+      "type": "After"
+    },
+    {
+      "source": "snapd.socket",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "snapd.socket",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "snapd.socket",
+      "target": "sockets.target",
+      "type": "Before"
+    },
+    {
+      "source": "sockets.target",
+      "target": "snapd.socket",
+      "type": "Wants"
+    },
+    {
+      "source": "snapd.mounts.target",
+      "target": "snapd.mounts-pre.target",
+      "type": "Wants"
+    },
+    {
+      "source": "snapd.mounts.target",
+      "target": "local-fs.target",
+      "type": "Before"
+    },
+    {
+      "source": "dbus-org.freedesktop.ModemManager1.service",
+      "target": "dbus-org.freedesktop.ModemManager1.service",
+      "type": "Alias"
+    },
+    {
+      "source": "dbus-org.freedesktop.ModemManager1.service",
+      "target": "polkit.service",
+      "type": "Requires"
+    },
+    {
+      "source": "dbus-org.freedesktop.ModemManager1.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "dbus-org.freedesktop.ModemManager1.service",
+      "target": "polkit.service",
+      "type": "After"
+    },
+    {
+      "source": "dbus-org.freedesktop.ModemManager1.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "dbus-org.freedesktop.ModemManager1.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "dbus-org.freedesktop.ModemManager1.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "dbus-org.freedesktop.ModemManager1.service",
+      "type": "Wants"
+    },
+    {
+      "source": "polkit.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "polkit.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "polkit.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "polkit.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "suspend.target",
+      "target": "systemd-suspend.service",
+      "type": "Requires"
+    },
+    {
+      "source": "suspend.target",
+      "target": "systemd-suspend.service",
+      "type": "After"
+    },
+    {
+      "source": "hibernate.target",
+      "target": "systemd-hibernate.service",
+      "type": "Requires"
+    },
+    {
+      "source": "hibernate.target",
+      "target": "systemd-hibernate.service",
+      "type": "After"
+    },
+    {
+      "source": "hybrid-sleep.target",
+      "target": "systemd-hybrid-sleep.service",
+      "type": "Requires"
+    },
+    {
+      "source": "hybrid-sleep.target",
+      "target": "systemd-hybrid-sleep.service",
+      "type": "After"
+    },
+    {
+      "source": "suspend-then-hibernate.target",
+      "target": "systemd-suspend-then-hibernate.service",
+      "type": "Requires"
+    },
+    {
+      "source": "suspend-then-hibernate.target",
+      "target": "systemd-suspend-then-hibernate.service",
+      "type": "After"
+    },
+    {
+      "source": "docker.socket",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "docker.socket",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "docker.socket",
+      "target": "sockets.target",
+      "type": "Before"
+    },
+    {
+      "source": "sockets.target",
+      "target": "docker.socket",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-networkd.socket",
+      "target": "sockets.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-networkd.socket",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "sockets.target",
+      "target": "systemd-networkd.socket",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-udevd.service",
+      "target": "systemd-sysusers.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-udevd.service",
+      "target": "systemd-hwdb-update.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-udevd.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-sysusers.service",
+      "target": "systemd-remount-fs.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-sysusers.service",
+      "target": "systemd-tmpfiles-setup-dev-early.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-sysusers.service",
+      "target": "systemd-tmpfiles-setup-dev.service",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-sysusers.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-sysusers.service",
+      "target": "systemd-update-done.service",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-sysusers.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-sysusers.service",
+      "target": "initrd-switch-root.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-sysctl.service",
+      "target": "systemd-modules-load.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-sysctl.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-sysctl.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "initrd-switch-root.target",
+      "target": "initrd-switch-root.service",
+      "type": "Wants"
+    },
+    {
+      "source": "initrd-switch-root.target",
+      "target": "initrd-udevadm-cleanup-db.service",
+      "type": "Wants"
+    },
+    {
+      "source": "initrd-switch-root.target",
+      "target": "initrd-root-fs.target",
+      "type": "Wants"
+    },
+    {
+      "source": "initrd-switch-root.target",
+      "target": "initrd-fs.target",
+      "type": "Wants"
+    },
+    {
+      "source": "initrd-switch-root.target",
+      "target": "systemd-journald.service",
+      "type": "Wants"
+    },
+    {
+      "source": "initrd-switch-root.target",
+      "target": "initrd-cleanup.service",
+      "type": "Wants"
+    },
+    {
+      "source": "initrd-switch-root.target",
+      "target": "initrd-udevadm-cleanup-db.service",
+      "type": "After"
+    },
+    {
+      "source": "initrd-switch-root.target",
+      "target": "initrd-root-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "initrd-switch-root.target",
+      "target": "initrd-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "initrd-switch-root.target",
+      "target": "emergency.service",
+      "type": "After"
+    },
+    {
+      "source": "initrd-switch-root.target",
+      "target": "emergency.target",
+      "type": "After"
+    },
+    {
+      "source": "initrd-switch-root.target",
+      "target": "initrd-cleanup.service",
+      "type": "After"
+    },
+    {
+      "source": "initrd-switch-root.target",
+      "target": "initrd-switch-root.service",
+      "type": "Before"
+    },
+    {
+      "source": "cloud-final.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "cloud-final.service",
+      "target": "network-online.target",
+      "type": "Wants"
+    },
+    {
+      "source": "cloud-final.service",
+      "target": "cloud-config.service",
+      "type": "Wants"
+    },
+    {
+      "source": "cloud-final.service",
+      "target": "network-online.target",
+      "type": "After"
+    },
+    {
+      "source": "cloud-final.service",
+      "target": "cloud-config.service",
+      "type": "After"
+    },
+    {
+      "source": "cloud-final.service",
+      "target": "rc-local.service",
+      "type": "After"
+    },
+    {
+      "source": "cloud-final.service",
+      "target": "multi-user.target",
+      "type": "After"
+    },
+    {
+      "source": "cloud-final.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "cloud-final.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "cloud-final.service",
+      "target": "apt-daily.service",
+      "type": "Before"
+    },
+    {
+      "source": "cloud-final.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "cloud-init.target",
+      "target": "cloud-final.service",
+      "type": "Wants"
+    },
+    {
+      "source": "inetd.service",
+      "target": "inetd.service",
+      "type": "Alias"
+    },
+    {
+      "source": "inetd.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "inetd.service",
+      "target": "network-online.target",
+      "type": "Wants"
+    },
+    {
+      "source": "inetd.service",
+      "target": "remote-fs.target",
+      "type": "Wants"
+    },
+    {
+      "source": "inetd.service",
+      "target": "network-online.target",
+      "type": "After"
+    },
+    {
+      "source": "inetd.service",
+      "target": "remote-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "inetd.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "inetd.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "inetd.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "inetd.service",
+      "type": "Wants"
+    },
+    {
+      "source": "dbus.socket",
+      "target": "sysinit.target",
+      "type": "Wants"
+    },
+    {
+      "source": "dbus.socket",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "user.slice",
+      "target": "slices.target",
+      "type": "Before"
+    },
+    {
+      "source": "modprobe@drm.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "rc-local.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "rc-local.service",
+      "target": "network.target",
+      "type": "After"
+    },
+    {
+      "source": "rc-local.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "rc-local.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "rc-local.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "plymouth-start.service",
+      "target": "systemd-ask-password-plymouth.path",
+      "type": "Wants"
+    },
+    {
+      "source": "plymouth-start.service",
+      "target": "systemd-udev-trigger.service",
+      "type": "After"
+    },
+    {
+      "source": "plymouth-start.service",
+      "target": "systemd-udevd.service",
+      "type": "After"
+    },
+    {
+      "source": "plymouth-start.service",
+      "target": "keyboard-setup.service",
+      "type": "After"
+    },
+    {
+      "source": "plymouth-start.service",
+      "target": "systemd-ask-password-plymouth.service",
+      "type": "Before"
+    },
+    {
+      "source": "emergency.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "emergency.service",
+      "target": "rescue.service",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-update-utmp.service",
+      "target": "systemd-remount-fs.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-update-utmp.service",
+      "target": "systemd-tmpfiles-setup.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-update-utmp.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-update-utmp.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "runlevel1.target",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "runlevel1.target",
+      "target": "rescue.service",
+      "type": "Requires"
+    },
+    {
+      "source": "runlevel1.target",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "runlevel1.target",
+      "target": "rescue.service",
+      "type": "After"
+    },
+    {
+      "source": "runlevel2.target",
+      "target": "basic.target",
+      "type": "Requires"
+    },
+    {
+      "source": "runlevel2.target",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "runlevel2.target",
+      "target": "rescue.service",
+      "type": "After"
+    },
+    {
+      "source": "runlevel2.target",
+      "target": "rescue.target",
+      "type": "After"
+    },
+    {
+      "source": "runlevel3.target",
+      "target": "basic.target",
+      "type": "Requires"
+    },
+    {
+      "source": "runlevel3.target",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "runlevel3.target",
+      "target": "rescue.service",
+      "type": "After"
+    },
+    {
+      "source": "runlevel3.target",
+      "target": "rescue.target",
+      "type": "After"
+    },
+    {
+      "source": "runlevel4.target",
+      "target": "basic.target",
+      "type": "Requires"
+    },
+    {
+      "source": "runlevel4.target",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "runlevel4.target",
+      "target": "rescue.service",
+      "type": "After"
+    },
+    {
+      "source": "runlevel4.target",
+      "target": "rescue.target",
+      "type": "After"
+    },
+    {
+      "source": "runlevel5.target",
+      "target": "multi-user.target",
+      "type": "Requires"
+    },
+    {
+      "source": "runlevel5.target",
+      "target": "multi-user.target",
+      "type": "After"
+    },
+    {
+      "source": "runlevel5.target",
+      "target": "rescue.service",
+      "type": "After"
+    },
+    {
+      "source": "runlevel5.target",
+      "target": "rescue.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-journald-audit.socket",
+      "target": "sockets.target",
+      "type": "Before"
+    },
+    {
+      "source": "sockets.target",
+      "target": "systemd-journald-audit.socket",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-journald.service",
+      "target": "systemd-journald-audit.socket",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-fsck-root.service",
+      "target": "systemd-fsckd.socket",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-fsck-root.service",
+      "target": "systemd-fsckd.socket",
+      "type": "After"
+    },
+    {
+      "source": "systemd-fsck-root.service",
+      "target": "local-fs.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-fsck-root.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-journald.service",
+      "target": "systemd-journald.socket",
+      "type": "Requires"
+    },
+    {
+      "source": "systemd-journald.service",
+      "target": "systemd-journald.socket",
+      "type": "After"
+    },
+    {
+      "source": "systemd-journald.service",
+      "target": "systemd-journald-dev-log.socket",
+      "type": "After"
+    },
+    {
+      "source": "systemd-journald.service",
+      "target": "systemd-journald-audit.socket",
+      "type": "After"
+    },
+    {
+      "source": "systemd-journald.service",
+      "target": "syslog.socket",
+      "type": "After"
+    },
+    {
+      "source": "systemd-journald.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-journald.service",
+      "target": "soft-reboot.target",
+      "type": "Before"
+    },
+    {
+      "source": "cloud-init.target",
+      "target": "multi-user.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-suspend.service",
+      "target": "sleep.target",
+      "type": "Requires"
+    },
+    {
+      "source": "systemd-suspend.service",
+      "target": "sleep.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-hibernate.service",
+      "target": "sleep.target",
+      "type": "Requires"
+    },
+    {
+      "source": "systemd-hibernate.service",
+      "target": "sleep.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-hybrid-sleep.service",
+      "target": "sleep.target",
+      "type": "Requires"
+    },
+    {
+      "source": "systemd-hybrid-sleep.service",
+      "target": "sleep.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-suspend-then-hibernate.service",
+      "target": "sleep.target",
+      "type": "Requires"
+    },
+    {
+      "source": "systemd-suspend-then-hibernate.service",
+      "target": "sleep.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-hwdb-update.service",
+      "target": "systemd-remount-fs.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-hwdb-update.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-hwdb-update.service",
+      "target": "systemd-update-done.service",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-hwdb-update.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-tmpfiles-setup-dev-early.service",
+      "target": "local-fs-pre.target",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-tmpfiles-setup-dev-early.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-tmpfiles-setup-dev-early.service",
+      "target": "local-fs-pre.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-tmpfiles-setup-dev-early.service",
+      "target": "systemd-udevd.service",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-tmpfiles-setup-dev-early.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-tmpfiles-setup-dev-early.service",
+      "target": "initrd-switch-root.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-tmpfiles-setup-dev.service",
+      "target": "local-fs-pre.target",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-tmpfiles-setup-dev.service",
+      "target": "systemd-tmpfiles-setup-dev-early.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-tmpfiles-setup-dev.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-tmpfiles-setup-dev.service",
+      "target": "local-fs-pre.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-tmpfiles-setup-dev.service",
+      "target": "systemd-udevd.service",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-tmpfiles-setup-dev.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-tmpfiles-setup-dev.service",
+      "target": "initrd-switch-root.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-update-done.service",
+      "target": "local-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-update-done.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-update-done.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "initrd-switch-root.service",
+      "target": "initrd-switch-root.target",
+      "type": "Wants"
+    },
+    {
+      "source": "initrd-udevadm-cleanup-db.service",
+      "target": "systemd-udevd.service",
+      "type": "After"
+    },
+    {
+      "source": "initrd-udevadm-cleanup-db.service",
+      "target": "systemd-udevd-control.socket",
+      "type": "After"
+    },
+    {
+      "source": "initrd-udevadm-cleanup-db.service",
+      "target": "systemd-udevd-kernel.socket",
+      "type": "After"
+    },
+    {
+      "source": "initrd-udevadm-cleanup-db.service",
+      "target": "systemd-udev-trigger.service",
+      "type": "After"
+    },
+    {
+      "source": "initrd-udevadm-cleanup-db.service",
+      "target": "systemd-udev-settle.service",
+      "type": "After"
+    },
+    {
+      "source": "initrd-udevadm-cleanup-db.service",
+      "target": "initrd-switch-root.target",
+      "type": "Before"
+    },
+    {
+      "source": "initrd-fs.target",
+      "target": "initrd-parse-etc.service",
+      "type": "After"
+    },
+    {
+      "source": "initrd-cleanup.service",
+      "target": "initrd-root-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "initrd-cleanup.service",
+      "target": "initrd-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "initrd-cleanup.service",
+      "target": "initrd.target",
+      "type": "After"
+    },
+    {
+      "source": "cloud-config.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "cloud-config.service",
+      "target": "network-online.target",
+      "type": "Wants"
+    },
+    {
+      "source": "cloud-config.service",
+      "target": "cloud-config.target",
+      "type": "Wants"
+    },
+    {
+      "source": "cloud-config.service",
+      "target": "network-online.target",
+      "type": "After"
+    },
+    {
+      "source": "cloud-config.service",
+      "target": "cloud-config.target",
+      "type": "After"
+    },
+    {
+      "source": "cloud-config.service",
+      "target": "snapd.seeded.service",
+      "type": "After"
+    },
+    {
+      "source": "cloud-config.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "cloud-config.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "cloud-config.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "cloud-init.target",
+      "target": "cloud-config.service",
+      "type": "Wants"
+    },
+    {
+      "source": "apt-daily.service",
+      "target": "sysinit.target",
+      "type": "Requires"
+    },
+    {
+      "source": "apt-daily.service",
+      "target": "network.target",
+      "type": "After"
+    },
+    {
+      "source": "apt-daily.service",
+      "target": "network-online.target",
+      "type": "After"
+    },
+    {
+      "source": "apt-daily.service",
+      "target": "systemd-networkd.service",
+      "type": "After"
+    },
+    {
+      "source": "apt-daily.service",
+      "target": "sysinit.target",
+      "type": "After"
+    },
+    {
+      "source": "apt-daily.service",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "apt-daily.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-ask-password-plymouth.path",
+      "target": "plymouth-start.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-ask-password-plymouth.path",
+      "target": "basic.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-ask-password-plymouth.path",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-udev-trigger.service",
+      "target": "systemd-udevd.service",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-udev-trigger.service",
+      "target": "systemd-udevd-kernel.socket",
+      "type": "After"
+    },
+    {
+      "source": "systemd-udev-trigger.service",
+      "target": "systemd-udevd-control.socket",
+      "type": "After"
+    },
+    {
+      "source": "systemd-udev-trigger.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "keyboard-setup.service",
+      "target": "local-fs-pre.target",
+      "type": "Wants"
+    },
+    {
+      "source": "keyboard-setup.service",
+      "target": "local-fs-pre.target",
+      "type": "Before"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "keyboard-setup.service",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-ask-password-plymouth.service",
+      "target": "plymouth-start.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-ask-password-plymouth.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-journald.socket",
+      "target": "sockets.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-journald-dev-log.socket",
+      "target": "sockets.target",
+      "type": "Before"
+    },
+    {
+      "source": "soft-reboot.target",
+      "target": "systemd-soft-reboot.service",
+      "type": "Requires"
+    },
+    {
+      "source": "soft-reboot.target",
+      "target": "systemd-soft-reboot.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-udevd-control.socket",
+      "target": "sockets.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-udevd-kernel.socket",
+      "target": "sockets.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-udev-settle.service",
+      "target": "systemd-udevd.service",
+      "type": "Wants"
+    },
+    {
+      "source": "systemd-udev-settle.service",
+      "target": "systemd-udev-trigger.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-udev-settle.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "initrd-parse-etc.service",
+      "target": "initrd-root-fs.target",
+      "type": "Requires"
+    },
+    {
+      "source": "initrd-parse-etc.service",
+      "target": "initrd-root-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "initrd.target",
+      "target": "basic.target",
+      "type": "Requires"
+    },
+    {
+      "source": "initrd.target",
+      "target": "initrd-root-fs.target",
+      "type": "Wants"
+    },
+    {
+      "source": "initrd.target",
+      "target": "initrd-root-device.target",
+      "type": "Wants"
+    },
+    {
+      "source": "initrd.target",
+      "target": "initrd-fs.target",
+      "type": "Wants"
+    },
+    {
+      "source": "initrd.target",
+      "target": "initrd-usr-fs.target",
+      "type": "Wants"
+    },
+    {
+      "source": "initrd.target",
+      "target": "initrd-parse-etc.service",
+      "type": "Wants"
+    },
+    {
+      "source": "initrd.target",
+      "target": "initrd-root-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "initrd.target",
+      "target": "initrd-root-device.target",
+      "type": "After"
+    },
+    {
+      "source": "initrd.target",
+      "target": "initrd-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "initrd.target",
+      "target": "initrd-usr-fs.target",
+      "type": "After"
+    },
+    {
+      "source": "initrd.target",
+      "target": "basic.target",
+      "type": "After"
+    },
+    {
+      "source": "initrd.target",
+      "target": "rescue.service",
+      "type": "After"
+    },
+    {
+      "source": "initrd.target",
+      "target": "rescue.target",
+      "type": "After"
+    },
+    {
+      "source": "cloud-config.target",
+      "target": "cloud-init-local.service",
+      "type": "Wants"
+    },
+    {
+      "source": "cloud-config.target",
+      "target": "cloud-init.service",
+      "type": "Wants"
+    },
+    {
+      "source": "cloud-config.target",
+      "target": "cloud-init-local.service",
+      "type": "After"
+    },
+    {
+      "source": "cloud-config.target",
+      "target": "cloud-init.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-soft-reboot.service",
+      "target": "shutdown.target",
+      "type": "Requires"
+    },
+    {
+      "source": "systemd-soft-reboot.service",
+      "target": "umount.target",
+      "type": "Requires"
+    },
+    {
+      "source": "systemd-soft-reboot.service",
+      "target": "final.target",
+      "type": "Requires"
+    },
+    {
+      "source": "systemd-soft-reboot.service",
+      "target": "shutdown.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-soft-reboot.service",
+      "target": "umount.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-soft-reboot.service",
+      "target": "final.target",
+      "type": "After"
+    },
+    {
+      "source": "cloud-init.service",
+      "target": "cloud-init-local.service",
+      "type": "Wants"
+    },
+    {
+      "source": "cloud-init.service",
+      "target": "sshd.service",
+      "type": "Wants"
+    },
+    {
+      "source": "cloud-init.service",
+      "target": "cloud-init-local.service",
+      "type": "After"
+    },
+    {
+      "source": "cloud-init.service",
+      "target": "systemd-networkd-wait-online.service",
+      "type": "After"
+    },
+    {
+      "source": "cloud-init.service",
+      "target": "network-online.target",
+      "type": "Before"
+    },
+    {
+      "source": "cloud-init.service",
+      "target": "sshd.service",
+      "type": "Before"
+    },
+    {
+      "source": "cloud-init.service",
+      "target": "sysinit.target",
+      "type": "Before"
+    },
+    {
+      "source": "cloud-init.service",
+      "target": "systemd-user-sessions.service",
+      "type": "Before"
+    },
+    {
+      "source": "cloud-init.target",
+      "target": "cloud-init.service",
+      "type": "Wants"
+    },
+    {
+      "source": "final.target",
+      "target": "shutdown.target",
+      "type": "After"
+    },
+    {
+      "source": "final.target",
+      "target": "umount.target",
+      "type": "After"
+    },
+    {
+      "source": "systemd-networkd-wait-online.service",
+      "target": "systemd-networkd.service",
+      "type": "After"
+    },
+    {
+      "source": "systemd-networkd-wait-online.service",
+      "target": "network-online.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-networkd-wait-online.service",
+      "target": "shutdown.target",
+      "type": "Before"
+    },
+    {
+      "source": "systemd-networkd-wait-online.service",
+      "target": "systemd-networkd.service",
+      "type": "BindsTo"
+    },
+    {
+      "source": "network-online.target",
+      "target": "systemd-networkd-wait-online.service",
+      "type": "Wants"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "dbus.service",
+      "type": "Wants"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "systemd-logind.service",
+      "type": "Wants"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "plymouth-quit.service",
+      "type": "Wants"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "plymouth-quit-wait.service",
+      "type": "Wants"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "getty.target",
+      "type": "Wants"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "systemd-ask-password-wall.path",
+      "type": "Wants"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "systemd-user-sessions.service",
+      "type": "Wants"
+    },
+    {
+      "source": "multi-user.target",
+      "target": "systemd-update-utmp-runlevel.service",
+      "type": "Wants"
+    },
+    {
+      "source": "rescue.target",
+      "target": "systemd-update-utmp-runlevel.service",
+      "type": "Wants"
+    },
+    {
+      "source": "sockets.target",
+      "target": "systemd-udevd-control.socket",
+      "type": "Wants"
+    },
+    {
+      "source": "sockets.target",
+      "target": "systemd-journald-dev-log.socket",
+      "type": "Wants"
+    },
+    {
+      "source": "sockets.target",
+      "target": "systemd-udevd-kernel.socket",
+      "type": "Wants"
+    },
+    {
+      "source": "sockets.target",
+      "target": "systemd-journald.socket",
+      "type": "Wants"
+    },
+    {
+      "source": "sockets.target",
+      "target": "dbus.socket",
+      "type": "Wants"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "systemd-udev-trigger.service",
+      "type": "Wants"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "systemd-journald.service",
+      "type": "Wants"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "plymouth-start.service",
+      "type": "Wants"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "systemd-tmpfiles-setup-dev.service",
+      "type": "Wants"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "systemd-update-done.service",
+      "type": "Wants"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "systemd-sysusers.service",
+      "type": "Wants"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "systemd-sysctl.service",
+      "type": "Wants"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "systemd-hwdb-update.service",
+      "type": "Wants"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "systemd-tmpfiles-setup-dev-early.service",
+      "type": "Wants"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "cryptsetup.target",
+      "type": "Wants"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "systemd-tmpfiles-setup.service",
+      "type": "Wants"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "systemd-update-utmp.service",
+      "type": "Wants"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "systemd-modules-load.service",
+      "type": "Wants"
+    },
+    {
+      "source": "sysinit.target",
+      "target": "systemd-udevd.service",
+      "type": "Wants"
+    },
+    {
+      "source": "initrd-switch-root.target",
+      "target": "plymouth-start.service",
+      "type": "Wants"
+    }
+  ],
+  "conditionals": {
+    "multi-user.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "thermald.service": {
+      "conditions": [
+        [
+          "ConditionVirtualization",
+          "no"
+        ]
+      ],
+      "asserts": []
+    },
+    "tat_install.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "unattended-upgrades.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "snapd.recovery-chooser-trigger.service": {
+      "conditions": [
+        [
+          "ConditionKernelCommandLine",
+          "snapd_recovery_mode"
+        ]
+      ],
+      "asserts": []
+    },
+    "rsyslog.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "ua-reboot-cmds.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "|/var/lib/ubuntu-advantage/marker-reboot-cmds-required"
+        ],
+        [
+          "ConditionPathExists",
+          "|/var/lib/ubuntu-advantage/marker-only-series-check"
+        ],
+        [
+          "ConditionPathExists",
+          "/var/lib/ubuntu-advantage/private/machine-token.json"
+        ]
+      ],
+      "asserts": []
+    },
+    "chrony.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "ssh.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "!/etc/ssh/sshd_not_to_be_run"
+        ]
+      ],
+      "asserts": []
+    },
+    "networkd-dispatcher.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "redis-server.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "containerd.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "open-vm-tools.service": {
+      "conditions": [
+        [
+          "ConditionVirtualization",
+          "vmware"
+        ]
+      ],
+      "asserts": []
+    },
+    "grub-initrd-fallback.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/boot/grub/grub.cfg"
+        ]
+      ],
+      "asserts": []
+    },
+    "tat_agent.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "snapd.core-fixup.service": {
+      "conditions": [
+        [
+          "ConditionKernelCommandLine",
+          "|snap_core"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "|snapd_recovery_mode"
+        ]
+      ],
+      "asserts": []
+    },
+    "sysstat.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "snapd.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "snapd.apparmor.service": {
+      "conditions": [
+        [
+          "ConditionSecurity",
+          "apparmor"
+        ]
+      ],
+      "asserts": []
+    },
+    "ufw.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "ModemManager.service": {
+      "conditions": [
+        [
+          "ConditionVirtualization",
+          "!container"
+        ]
+      ],
+      "asserts": []
+    },
+    "snapd.autoimport.service": {
+      "conditions": [
+        [
+          "ConditionKernelCommandLine",
+          "|snap_core"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "|snapd_recovery_mode"
+        ]
+      ],
+      "asserts": []
+    },
+    "pollinate.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "!/var/cache/pollinate/seeded"
+        ],
+        [
+          "ConditionVirtualization",
+          "!container"
+        ]
+      ],
+      "asserts": []
+    },
+    "secureboot-db.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/sys/firmware/efi/efivars/db-d719b2cb-3d3a-4596-a3bc-dad00e67656f"
+        ]
+      ],
+      "asserts": []
+    },
+    "grub-common.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/boot/grub/grub.cfg"
+        ]
+      ],
+      "asserts": []
+    },
+    "remote-fs.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "lxd-installer.socket": {
+      "conditions": [],
+      "asserts": []
+    },
+    "apport.service": {
+      "conditions": [
+        [
+          "ConditionVirtualization",
+          "!container"
+        ]
+      ],
+      "asserts": []
+    },
+    "docker.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "e2scrub_reap.service": {
+      "conditions": [
+        [
+          "ConditionCapability",
+          "CAP_SYS_ADMIN"
+        ],
+        [
+          "ConditionCapability",
+          "CAP_SYS_RAWIO"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-networkd.service": {
+      "conditions": [
+        [
+          "ConditionCapability",
+          "CAP_NET_ADMIN"
+        ]
+      ],
+      "asserts": []
+    },
+    "mongod.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "dmesg.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "snapd.seeded.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "inetutils-inetd.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/etc/inetd.conf"
+        ]
+      ],
+      "asserts": []
+    },
+    "ubuntu-advantage.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "!/var/lib/ubuntu-advantage/private/machine-token.json"
+        ],
+        [
+          "ConditionPathExists",
+          "|/run/cloud-init/cloud-id-gce"
+        ],
+        [
+          "ConditionPathExists",
+          "|/run/cloud-init/cloud-id-azure"
+        ],
+        [
+          "ConditionPathExists",
+          "|/run/cloud-init/cloud-id-lxd"
+        ],
+        [
+          "ConditionPathExists",
+          "|/run/ubuntu-advantage/flags/auto-attach-failed"
+        ]
+      ],
+      "asserts": []
+    },
+    "console-setup.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/bin/setupcon"
+        ]
+      ],
+      "asserts": []
+    },
+    "cron.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "dbus.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-logind.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "plymouth-quit.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "plymouth-quit-wait.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "getty.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-ask-password-wall.path": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-user-sessions.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-update-utmp-runlevel.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "!/etc/initrd-release"
+        ]
+      ],
+      "asserts": []
+    },
+    "basic.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "rescue.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "rescue.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "dbus-org.freedesktop.thermald.service": {
+      "conditions": [
+        [
+          "ConditionVirtualization",
+          "no"
+        ]
+      ],
+      "asserts": []
+    },
+    "sysinit.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "shutdown.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "network.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "local-fs.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "getty-pre.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "syslog.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "syslog.socket": {
+      "conditions": [],
+      "asserts": []
+    },
+    "chronyd.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "time-sync.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "sshd.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "!/etc/ssh/sshd_not_to_be_run"
+        ]
+      ],
+      "asserts": []
+    },
+    "redis.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "vmtoolsd.service": {
+      "conditions": [
+        [
+          "ConditionVirtualization",
+          "vmware"
+        ]
+      ],
+      "asserts": []
+    },
+    "vgauth.service": {
+      "conditions": [
+        [
+          "ConditionVirtualization",
+          "vmware"
+        ]
+      ],
+      "asserts": []
+    },
+    "apparmor.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "!/rofs/etc/apparmor.d"
+        ],
+        [
+          "ConditionPathExists",
+          "!/run/live/overlay/work"
+        ],
+        [
+          "ConditionSecurity",
+          "apparmor"
+        ]
+      ],
+      "asserts": [
+        [
+          "AssertPathIsReadWrite",
+          "/sys/kernel/security/apparmor/.load"
+        ]
+      ]
+    },
+    "systemd-remount-fs.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-tmpfiles-setup.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-modules-load.service": {
+      "conditions": [
+        [
+          "ConditionDirectoryNotEmpty",
+          "|/lib/modules-load.d"
+        ],
+        [
+          "ConditionDirectoryNotEmpty",
+          "|/usr/lib/modules-load.d"
+        ],
+        [
+          "ConditionDirectoryNotEmpty",
+          "|/usr/local/lib/modules-load.d"
+        ],
+        [
+          "ConditionDirectoryNotEmpty",
+          "|/etc/modules-load.d"
+        ],
+        [
+          "ConditionDirectoryNotEmpty",
+          "|/run/modules-load.d"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "|modules-load"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "|rd.modules-load"
+        ],
+        [
+          "ConditionCapability",
+          "CAP_SYS_MODULE"
+        ]
+      ],
+      "asserts": []
+    },
+    "cloud-init-local.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "sleep.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "emergency.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "network-online.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "snapd.socket": {
+      "conditions": [],
+      "asserts": []
+    },
+    "time-set.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "snapd.mounts.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "network-pre.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "dbus-org.freedesktop.ModemManager1.service": {
+      "conditions": [
+        [
+          "ConditionVirtualization",
+          "!container"
+        ]
+      ],
+      "asserts": []
+    },
+    "polkit.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "suspend.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "hibernate.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "hybrid-sleep.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "suspend-then-hibernate.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "remote-fs-pre.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "sockets.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "docker.socket": {
+      "conditions": [],
+      "asserts": []
+    },
+    "nss-lookup.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-networkd.socket": {
+      "conditions": [
+        [
+          "ConditionCapability",
+          "CAP_NET_ADMIN"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-udevd.service": {
+      "conditions": [
+        [
+          "ConditionPathIsReadWrite",
+          "/sys"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-sysusers.service": {
+      "conditions": [
+        [
+          "ConditionNeedsUpdate",
+          "|/etc"
+        ],
+        [
+          "ConditionCredential",
+          "|sysusers.extra"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-sysctl.service": {
+      "conditions": [
+        [
+          "ConditionPathIsReadWrite",
+          "/proc/sys/net/"
+        ]
+      ],
+      "asserts": []
+    },
+    "initrd-switch-root.target": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
+      ]
+    },
+    "cloud-final.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "inetd.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/etc/inetd.conf"
+        ]
+      ],
+      "asserts": []
+    },
+    "nss-user-lookup.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "dbus.socket": {
+      "conditions": [],
+      "asserts": []
+    },
+    "user.slice": {
+      "conditions": [],
+      "asserts": []
+    },
+    "modprobe@.service": {
+      "conditions": [
+        [
+          "ConditionCapability",
+          "CAP_SYS_MODULE"
+        ]
+      ],
+      "asserts": []
+    },
+    "rc-local.service": {
+      "conditions": [
+        [
+          "ConditionFileIsExecutable",
+          "/etc/rc.local"
+        ]
+      ],
+      "asserts": []
+    },
+    "plymouth-start.service": {
+      "conditions": [
+        [
+          "ConditionKernelCommandLine",
+          "!plymouth.enable=0"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "!nosplash"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "splash"
+        ],
+        [
+          "ConditionVirtualization",
+          "!container"
+        ]
+      ],
+      "asserts": []
+    },
+    "paths.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "cryptsetup.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "emergency.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-update-utmp.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "!/etc/initrd-release"
+        ]
+      ],
+      "asserts": []
+    },
+    "runlevel1.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "runlevel2.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "runlevel3.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "runlevel4.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "runlevel5.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "timers.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "slices.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "swap.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "local-fs-pre.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-journald-audit.socket": {
+      "conditions": [
+        [
+          "ConditionSecurity",
+          "audit"
+        ],
+        [
+          "ConditionCapability",
+          "CAP_AUDIT_READ"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-fsck-root.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "!/run/initramfs/fsck-root"
+        ],
+        [
+          "ConditionPathIsReadWrite",
+          "!/"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-journald.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "cloud-init.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "snapd.mounts-pre.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-suspend.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-hibernate.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-hybrid-sleep.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-suspend-then-hibernate.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-hwdb-update.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "|!/usr/lib/udev/hwdb.bin"
+        ],
+        [
+          "ConditionPathExists",
+          "|/etc/udev/hwdb.bin"
+        ],
+        [
+          "ConditionDirectoryNotEmpty",
+          "|/etc/udev/hwdb.d/"
+        ],
+        [
+          "ConditionNeedsUpdate",
+          "/etc"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-tmpfiles-setup-dev-early.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-tmpfiles-setup-dev.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-update-done.service": {
+      "conditions": [
+        [
+          "ConditionNeedsUpdate",
+          "|/etc"
+        ],
+        [
+          "ConditionNeedsUpdate",
+          "|/var"
+        ]
+      ],
+      "asserts": []
+    },
+    "initrd-switch-root.service": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
+      ]
+    },
+    "initrd-udevadm-cleanup-db.service": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
+      ]
+    },
+    "initrd-root-fs.target": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
+      ]
+    },
+    "initrd-fs.target": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
+      ]
+    },
+    "initrd-cleanup.service": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
+      ]
+    },
+    "cloud-config.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "apt-daily.service": {
+      "conditions": [
+        [
+          "ConditionACPower",
+          "true"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-ask-password-plymouth.path": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/run/plymouth/pid"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "!plymouth.enable=0"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "!nosplash"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "splash"
+        ],
+        [
+          "ConditionVirtualization",
+          "!container"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-udev-trigger.service": {
+      "conditions": [
+        [
+          "ConditionPathIsReadWrite",
+          "/sys"
+        ]
+      ],
+      "asserts": []
+    },
+    "keyboard-setup.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/bin/setupcon"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-ask-password-plymouth.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/run/plymouth/pid"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "!plymouth.enable=0"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "!nosplash"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "splash"
+        ],
+        [
+          "ConditionVirtualization",
+          "!container"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-fsckd.socket": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-journald.socket": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-journald-dev-log.socket": {
+      "conditions": [],
+      "asserts": []
+    },
+    "soft-reboot.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-udevd-control.socket": {
+      "conditions": [
+        [
+          "ConditionPathIsReadWrite",
+          "/sys"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-udevd-kernel.socket": {
+      "conditions": [
+        [
+          "ConditionPathIsReadWrite",
+          "/sys"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-udev-settle.service": {
+      "conditions": [
+        [
+          "ConditionPathIsReadWrite",
+          "/sys"
+        ]
+      ],
+      "asserts": []
+    },
+    "initrd-parse-etc.service": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
+      ]
+    },
+    "initrd.target": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
+      ]
+    },
+    "cloud-config.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-soft-reboot.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "initrd-root-device.target": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
+      ]
+    },
+    "initrd-usr-fs.target": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
+      ]
+    },
+    "cloud-init.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "umount.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "final.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-networkd-wait-online.service": {
+      "conditions": [
+        [
+          "ConditionCapability",
+          "CAP_NET_ADMIN"
+        ]
+      ],
+      "asserts": []
+    }
+  }
+}
