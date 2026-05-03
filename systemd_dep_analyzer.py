@@ -242,14 +242,20 @@ class SystemdDependencyAnalyzer:
                         unit_info[key].append(dep)
 
         unit_name = unit_info['name']
-        self.conditionals[unit_name] = []
+        self.conditionals[unit_name] = {
+            'conditions': [],
+            'asserts': [],
+        }
         
         for prefix in CONDITION_PREFIXES:
             pattern = rf'^{prefix}\s*=\s*(.+)$'
             matches = re.finditer(pattern, content, re.MULTILINE)
             for match in matches:
                 value = match.group(1).strip()
-                self.conditionals[unit_name].append((prefix, value))
+                if prefix.startswith('Assert'):
+                    self.conditionals[unit_name]['asserts'].append((prefix, value))
+                else:
+                    self.conditionals[unit_name]['conditions'].append((prefix, value))
 
         return unit_info
 
@@ -328,15 +334,17 @@ class SystemdDependencyAnalyzer:
                     target_name = item[:-6]
                     for unit_name in os.listdir(item_path):
                         unit_full_path = os.path.join(item_path, unit_name)
-                        if os.path.islink(unit_full_path):
-                            all_wants[target_name].append((unit_name, 'Wants'))
+                        if os.path.isdir(unit_full_path):
+                            continue
+                        all_wants[target_name].append((unit_name, 'Wants'))
                 
                 elif item.endswith('.requires'):
                     target_name = item[:-9]
                     for unit_name in os.listdir(item_path):
                         unit_full_path = os.path.join(item_path, unit_name)
-                        if os.path.islink(unit_full_path):
-                            all_wants[target_name].append((unit_name, 'Requires'))
+                        if os.path.isdir(unit_full_path):
+                            continue
+                        all_wants[target_name].append((unit_name, 'Requires'))
 
         return dict(all_wants)
 
@@ -484,14 +492,14 @@ class SystemdDependencyAnalyzer:
         
         self.relationships = unique_relationships
 
-        valid_units = set()
-        for source, target, _ in self.relationships:
-            valid_units.add(source)
-            valid_units.add(target)
+        units_with_file = set()
+        for unit_name, unit_info in self.units.items():
+            if unit_info['path'] is not None:
+                units_with_file.add(unit_name)
 
         for unit_name in list(self.units.keys()):
             unit_info = self.units[unit_name]
-            if unit_info['path'] is None and unit_name not in valid_units:
+            if unit_info['path'] is None:
                 del self.units[unit_name]
 
         final_relationships = []
@@ -546,7 +554,15 @@ class SystemdDependencyAnalyzer:
             unit_type = unit_info['type']
             target_subgraphs[unit_type].append(unit_name)
 
-        for unit_type, unit_names in target_subgraphs.items():
+        type_order = ['target', 'service', 'socket', 'mount', 'path', 'timer', 'swap', 'slice', 'scope']
+        all_types = list(target_subgraphs.keys())
+        sorted_types = [t for t in type_order if t in all_types]
+        for t in all_types:
+            if t not in sorted_types:
+                sorted_types.append(t)
+
+        for unit_type in sorted_types:
+            unit_names = sorted(target_subgraphs[unit_type])
             if not unit_names:
                 continue
             
@@ -562,13 +578,22 @@ class SystemdDependencyAnalyzer:
                 color = UNIT_COLORS.get(unit_type, '#808080')
                 description = unit_info['description'].replace('"', '\\"').replace('\n', ' ')
                 
-                has_conditions = unit_name in self.conditionals and len(self.conditionals[unit_name]) > 0
-                condition_note = ' [COND]' if has_conditions else ''
+                cond_data = self.conditionals.get(unit_name, {})
+                has_conditions = len(cond_data.get('conditions', [])) > 0
+                has_asserts = len(cond_data.get('asserts', [])) > 0
+                
+                condition_note = ''
+                if has_asserts:
+                    condition_note = ' [ASSERT]'
+                elif has_conditions:
+                    condition_note = ' [COND]'
                 
                 label = f'{unit_name}{condition_note}\\n{description[:40]}{"..." if len(description) > 40 else ""}'
                 
-                if has_conditions:
-                    dot_lines.append(f'        "{unit_name}" [label="{label}", fillcolor="{color}", color="{color}", penwidth=2, style="filled,dashed"];')
+                if has_asserts:
+                    dot_lines.append(f'        "{unit_name}" [label="{label}", fillcolor="{color}", color="#FF0000", penwidth=3, style="filled,dashed"];')
+                elif has_conditions:
+                    dot_lines.append(f'        "{unit_name}" [label="{label}", fillcolor="{color}", color="#FF6600", penwidth=2, style="filled,dashed"];')
                 else:
                     dot_lines.append(f'        "{unit_name}" [label="{label}", fillcolor="{color}", color="{color}"];')
             
@@ -587,39 +612,75 @@ class SystemdDependencyAnalyzer:
 
         dot_lines.extend([
             '',
-            '    subgraph cluster_legend {',
-            '        label="Legend";',
-            '        style="filled";',
-            '        color="#F0F0F0";',
-            '        rank=max;',
+            '    {',
+            '        rank=min;',
+            '        subgraph cluster_legend_left {',
+            '            label="Unit Types";',
+            '            style="filled";',
+            '            color="#F0F0F0";',
+            '            style="dashed";',
         ])
 
         for i, (unit_type, color) in enumerate(UNIT_COLORS.items()):
-            dot_lines.append(f'        legend_unit_{i} [label="{unit_type}", fillcolor="{color}", style="filled", shape="box"];')
+            if unit_type in target_subgraphs:
+                dot_lines.append(f'            legend_unit_{i} [label="{unit_type}", fillcolor="{color}", style="filled", shape="box"];')
+
+        dot_lines.extend([
+            '        }',
+            '    }',
+            '',
+            '    {',
+            '        rank=max;',
+            '        subgraph cluster_legend_right {',
+            '            label="Relationships & Conditions";',
+            '            style="filled";',
+            '            color="#F0F0F0";',
+            '            style="dashed";',
+        ])
 
         for i, (rel_type, color) in enumerate(RELATION_COLORS.items()):
             style = 'solid' if rel_type in ['Requires', 'Requisite', 'BindsTo'] else 'dashed'
-            dot_lines.append(f'        legend_rel_{i} [label="{rel_type}", style="dotted", shape="plaintext"];')
+            dot_lines.append(f'            legend_rel_{i} [label="{rel_type}", style="dotted", shape="plaintext"];')
 
-        dot_lines.append('        legend_cond [label="[COND] = Has conditions", style="dashed", shape="box", color="#FF6600"];')
+        dot_lines.append('            legend_cond [label="[COND] = Condition (optional)", style="dashed", shape="box", color="#FF6600"];')
+        dot_lines.append('            legend_assert [label="[ASSERT] = Assert (required/fail)", style="dashed", shape="box", color="#FF0000"];')
+        dot_lines.append('        }')
         dot_lines.append('    }')
         dot_lines.append('}')
 
         return '\n'.join(dot_lines)
 
     def generate_html(self) -> str:
+        sorted_units = sorted(self.units.keys())
+        
         nodes_data = []
-        for unit_name, unit_info in self.units.items():
-            has_conditions = unit_name in self.conditionals and len(self.conditionals[unit_name]) > 0
-            conditions = self.conditionals.get(unit_name, [])
+        for unit_name in sorted_units:
+            unit_info = self.units[unit_name]
+            cond_data = self.conditionals.get(unit_name, {})
+            has_conditions = len(cond_data.get('conditions', [])) > 0
+            has_asserts = len(cond_data.get('asserts', [])) > 0
+            
+            all_conditions = []
+            for cond in cond_data.get('conditions', []):
+                all_conditions.append({'type': cond[0], 'value': cond[1], 'category': 'Condition'})
+            for cond in cond_data.get('asserts', []):
+                all_conditions.append({'type': cond[0], 'value': cond[1], 'category': 'Assert'})
+            
+            border_color = UNIT_COLORS.get(unit_info['type'], '#808080')
+            if has_asserts:
+                border_color = '#FF0000'
+            elif has_conditions:
+                border_color = '#FF6600'
             
             nodes_data.append({
                 'id': unit_name,
                 'type': unit_info['type'],
                 'description': unit_info['description'],
                 'color': UNIT_COLORS.get(unit_info['type'], '#808080'),
+                'borderColor': border_color,
                 'hasConditions': has_conditions,
-                'conditions': [{'type': c[0], 'value': c[1]} for c in conditions],
+                'hasAsserts': has_asserts,
+                'conditions': all_conditions,
             })
 
         links_data = []
@@ -1008,6 +1069,10 @@ class SystemdDependencyAnalyzer:
             typeGroups[n.type].push(i);
         });
 
+        for (const type in typeGroups) {
+            typeGroups[type].sort((a, b) => nodes[a].id.localeCompare(nodes[b].id));
+        }
+
         const typeOrder = ['target', 'service', 'socket', 'mount', 'path', 'timer', 'swap', 'slice', 'scope'];
         const nodeX = {};
         const nodeY = {};
@@ -1028,6 +1093,7 @@ class SystemdDependencyAnalyzer:
         });
 
         const remainingTypes = Object.keys(typeGroups).filter(t => !typeOrder.includes(t));
+        remainingTypes.sort();
         let nextCol = typeOrder.length;
         remainingTypes.forEach((type) => {
             const indices = typeGroups[type] || [];
@@ -1075,8 +1141,9 @@ class SystemdDependencyAnalyzer:
             .attr('width', d => Math.max(d.id.length * 8 + 16, 80))
             .attr('height', 36)
             .attr('fill', d => d.color)
-            .attr('stroke', d => d.hasConditions ? '#FF6600' : d.color)
-            .attr('stroke-dasharray', d => d.hasConditions ? '4,2' : null)
+            .attr('stroke', d => d.borderColor)
+            .attr('stroke-dasharray', d => (d.hasConditions || d.hasAsserts) ? '4,2' : null)
+            .attr('stroke-width', d => d.hasAsserts ? 3 : (d.hasConditions ? 2 : 1.5))
             .attr('rx', 6)
             .attr('ry', 6);
 
@@ -1092,14 +1159,25 @@ class SystemdDependencyAnalyzer:
             tooltipHtml += `<strong>Type:</strong> ${d.type}<br>`;
             tooltipHtml += `<strong>Description:</strong> ${d.description || 'N/A'}`;
             
-            if (d.hasConditions && d.conditions.length > 0) {
-                tooltipHtml += '<div class="conditions"><strong>Conditions:</strong><br>';
-                d.conditions.forEach(c => {
-                    const isAssert = c.type.startsWith('Assert');
-                    const prefix = isAssert ? c.type : c.type;
-                    tooltipHtml += `<div class="condition-item">${prefix} = ${c.value}</div>`;
-                });
-                tooltipHtml += '</div>';
+            if (d.conditions && d.conditions.length > 0) {
+                const assertConditions = d.conditions.filter(c => c.category === 'Assert');
+                const regularConditions = d.conditions.filter(c => c.category === 'Condition');
+                
+                if (assertConditions.length > 0) {
+                    tooltipHtml += '<div class="conditions"><strong style="color: #FF6666;">Asserts (required/fail):</strong><br>';
+                    assertConditions.forEach(c => {
+                        tooltipHtml += `<div class="condition-item" style="color: #FF6666;">${c.type} = ${c.value}</div>`;
+                    });
+                    tooltipHtml += '</div>';
+                }
+                
+                if (regularConditions.length > 0) {
+                    tooltipHtml += '<div class="conditions"><strong style="color: #FFCC66;">Conditions (optional):</strong><br>';
+                    regularConditions.forEach(c => {
+                        tooltipHtml += `<div class="condition-item" style="color: #FFCC66;">${c.type} = ${c.value}</div>`;
+                    });
+                    tooltipHtml += '</div>';
+                }
             }
             
             const incoming = links.filter(l => l.target === d.id);

@@ -38,7 +38,6 @@
     "docker.service",
     "e2scrub_reap.service",
     "systemd-networkd.service",
-    "dbus-org.freedesktop.network1.service",
     "mongod.service",
     "dmesg.service",
     "snapd.seeded.service",
@@ -64,9 +63,7 @@
     "local-fs.target",
     "getty-pre.target",
     "syslog.socket",
-    "ua-auto-attach.service",
     "time-sync.target",
-    "auditd.service",
     "vgauth.service",
     "apparmor.service",
     "systemd-remount-fs.service",
@@ -89,17 +86,12 @@
     "sockets.target",
     "docker.socket",
     "nss-lookup.target",
-    "firewalld.service",
     "systemd-networkd.socket",
     "systemd-udevd.service",
     "systemd-sysusers.service",
     "systemd-sysctl.service",
     "initrd-switch-root.target",
     "cloud-final.service",
-    "ubuntu-advantage-cloud-id-shim.service",
-    "console-screen.service",
-    "kbd.service",
-    "display-manager.service",
     "nss-user-lookup.target",
     "dbus.socket",
     "user.slice",
@@ -109,7 +101,6 @@
     "paths.target",
     "cryptsetup.target",
     "emergency.service",
-    "home.mount",
     "systemd-update-utmp.service",
     "runlevel1.target",
     "runlevel2.target",
@@ -118,13 +109,11 @@
     "runlevel5.target",
     "timers.target",
     "slices.target",
-    "tmp.mount",
     "swap.target",
     "local-fs-pre.target",
     "systemd-journald-audit.socket",
     "systemd-fsck-root.service",
     "systemd-journald.service",
-    "NetworkManager.service",
     "cloud-init.target",
     "snapd.mounts-pre.target",
     "systemd-suspend.service",
@@ -146,29 +135,23 @@
     "systemd-udev-trigger.service",
     "keyboard-setup.service",
     "systemd-ask-password-plymouth.service",
-    "-.slice",
-    "system.slice",
     "systemd-fsckd.socket",
     "systemd-journald.socket",
     "systemd-journald-dev-log.socket",
     "soft-reboot.target",
-    "zfs-mount.service",
     "systemd-udevd-control.socket",
     "systemd-udevd-kernel.socket",
     "systemd-udev-settle.service",
     "initrd-parse-etc.service",
     "initrd.target",
     "cloud-config.target",
-    "connman.service",
     "systemd-soft-reboot.service",
     "initrd-root-device.target",
     "initrd-usr-fs.target",
     "cloud-init.service",
     "umount.target",
     "final.target",
-    "sshd-keygen.service",
-    "systemd-networkd-wait-online.service",
-    "networking.service"
+    "systemd-networkd-wait-online.service"
   ],
   "relationships": [
     {
@@ -368,11 +351,6 @@
     },
     {
       "source": "ua-reboot-cmds.service",
-      "target": "ua-auto-attach.service",
-      "type": "After"
-    },
-    {
-      "source": "ua-reboot-cmds.service",
       "target": "sysinit.target",
       "type": "After"
     },
@@ -449,11 +427,6 @@
     {
       "source": "ssh.service",
       "target": "network.target",
-      "type": "After"
-    },
-    {
-      "source": "ssh.service",
-      "target": "auditd.service",
       "type": "After"
     },
     {
@@ -1158,11 +1131,6 @@
     },
     {
       "source": "docker.service",
-      "target": "firewalld.service",
-      "type": "After"
-    },
-    {
-      "source": "docker.service",
       "target": "containerd.service",
       "type": "After"
     },
@@ -1215,11 +1183,6 @@
       "source": "multi-user.target",
       "target": "e2scrub_reap.service",
       "type": "Wants"
-    },
-    {
-      "source": "dbus-org.freedesktop.network1.service",
-      "target": "systemd-networkd.service",
-      "type": "Alias"
     },
     {
       "source": "systemd-networkd.service",
@@ -1453,16 +1416,6 @@
     },
     {
       "source": "ubuntu-advantage.service",
-      "target": "ua-auto-attach.service",
-      "type": "After"
-    },
-    {
-      "source": "ubuntu-advantage.service",
-      "target": "ubuntu-advantage-cloud-id-shim.service",
-      "type": "After"
-    },
-    {
-      "source": "ubuntu-advantage.service",
       "target": "sysinit.target",
       "type": "After"
     },
@@ -1483,23 +1436,8 @@
     },
     {
       "source": "console-setup.service",
-      "target": "console-screen.service",
-      "type": "After"
-    },
-    {
-      "source": "console-setup.service",
-      "target": "kbd.service",
-      "type": "After"
-    },
-    {
-      "source": "console-setup.service",
       "target": "local-fs.target",
       "type": "After"
-    },
-    {
-      "source": "console-setup.service",
-      "target": "display-manager.service",
-      "type": "Before"
     },
     {
       "source": "multi-user.target",
@@ -1728,11 +1666,6 @@
     },
     {
       "source": "systemd-user-sessions.service",
-      "target": "home.mount",
-      "type": "After"
-    },
-    {
-      "source": "systemd-user-sessions.service",
       "target": "sysinit.target",
       "type": "After"
     },
@@ -1813,11 +1746,6 @@
     },
     {
       "source": "basic.target",
-      "target": "tmp.mount",
-      "type": "Wants"
-    },
-    {
-      "source": "basic.target",
       "target": "sysinit.target",
       "type": "After"
     },
@@ -1834,11 +1762,6 @@
     {
       "source": "basic.target",
       "target": "slices.target",
-      "type": "After"
-    },
-    {
-      "source": "basic.target",
-      "target": "tmp.mount",
       "type": "After"
     },
     {
@@ -2068,11 +1991,6 @@
     },
     {
       "source": "sshd.service",
-      "target": "auditd.service",
-      "type": "After"
-    },
-    {
-      "source": "sshd.service",
       "target": "sysinit.target",
       "type": "After"
     },
@@ -2290,11 +2208,6 @@
       "source": "cloud-init-local.service",
       "target": "systemd-remount-fs.service",
       "type": "After"
-    },
-    {
-      "source": "cloud-init-local.service",
-      "target": "NetworkManager.service",
-      "type": "Before"
     },
     {
       "source": "cloud-init-local.service",
@@ -2828,11 +2741,6 @@
     },
     {
       "source": "systemd-update-utmp.service",
-      "target": "auditd.service",
-      "type": "After"
-    },
-    {
-      "source": "systemd-update-utmp.service",
       "target": "sysinit.target",
       "type": "Before"
     },
@@ -2928,11 +2836,6 @@
     },
     {
       "source": "runlevel5.target",
-      "target": "display-manager.service",
-      "type": "Wants"
-    },
-    {
-      "source": "runlevel5.target",
       "target": "multi-user.target",
       "type": "After"
     },
@@ -2944,31 +2847,6 @@
     {
       "source": "runlevel5.target",
       "target": "rescue.target",
-      "type": "After"
-    },
-    {
-      "source": "runlevel5.target",
-      "target": "display-manager.service",
-      "type": "After"
-    },
-    {
-      "source": "slices.target",
-      "target": "-.slice",
-      "type": "Wants"
-    },
-    {
-      "source": "slices.target",
-      "target": "system.slice",
-      "type": "Wants"
-    },
-    {
-      "source": "slices.target",
-      "target": "-.slice",
-      "type": "After"
-    },
-    {
-      "source": "slices.target",
-      "target": "system.slice",
       "type": "After"
     },
     {
@@ -3044,11 +2922,6 @@
     {
       "source": "cloud-init.target",
       "target": "multi-user.target",
-      "type": "After"
-    },
-    {
-      "source": "snapd.mounts-pre.target",
-      "target": "zfs-mount.service",
       "type": "After"
     },
     {
@@ -3318,16 +3191,6 @@
     },
     {
       "source": "apt-daily.service",
-      "target": "NetworkManager.service",
-      "type": "After"
-    },
-    {
-      "source": "apt-daily.service",
-      "target": "connman.service",
-      "type": "After"
-    },
-    {
-      "source": "apt-daily.service",
       "target": "sysinit.target",
       "type": "After"
     },
@@ -3578,11 +3441,6 @@
     },
     {
       "source": "cloud-init.service",
-      "target": "sshd-keygen.service",
-      "type": "Wants"
-    },
-    {
-      "source": "cloud-init.service",
       "target": "sshd.service",
       "type": "Wants"
     },
@@ -3598,17 +3456,7 @@
     },
     {
       "source": "cloud-init.service",
-      "target": "networking.service",
-      "type": "After"
-    },
-    {
-      "source": "cloud-init.service",
       "target": "network-online.target",
-      "type": "Before"
-    },
-    {
-      "source": "cloud-init.service",
-      "target": "sshd-keygen.service",
       "type": "Before"
     },
     {
@@ -3813,604 +3661,1061 @@
     }
   ],
   "conditionals": {
-    "multi-user.target": [],
-    "thermald.service": [
-      [
-        "ConditionVirtualization",
-        "no"
-      ]
-    ],
-    "tat_install.service": [],
-    "unattended-upgrades.service": [],
-    "snapd.recovery-chooser-trigger.service": [
-      [
-        "ConditionKernelCommandLine",
-        "snapd_recovery_mode"
-      ]
-    ],
-    "rsyslog.service": [],
-    "ua-reboot-cmds.service": [
-      [
-        "ConditionPathExists",
-        "|/var/lib/ubuntu-advantage/marker-reboot-cmds-required"
+    "multi-user.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "thermald.service": {
+      "conditions": [
+        [
+          "ConditionVirtualization",
+          "no"
+        ]
       ],
-      [
-        "ConditionPathExists",
-        "|/var/lib/ubuntu-advantage/marker-only-series-check"
+      "asserts": []
+    },
+    "tat_install.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "unattended-upgrades.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "snapd.recovery-chooser-trigger.service": {
+      "conditions": [
+        [
+          "ConditionKernelCommandLine",
+          "snapd_recovery_mode"
+        ]
       ],
-      [
-        "ConditionPathExists",
-        "/var/lib/ubuntu-advantage/private/machine-token.json"
-      ]
-    ],
-    "chrony.service": [],
-    "ssh.service": [
-      [
-        "ConditionPathExists",
-        "!/etc/ssh/sshd_not_to_be_run"
-      ]
-    ],
-    "networkd-dispatcher.service": [],
-    "redis-server.service": [],
-    "containerd.service": [],
-    "open-vm-tools.service": [
-      [
-        "ConditionVirtualization",
-        "vmware"
-      ]
-    ],
-    "grub-initrd-fallback.service": [
-      [
-        "ConditionPathExists",
-        "/boot/grub/grub.cfg"
-      ]
-    ],
-    "tat_agent.service": [],
-    "snapd.core-fixup.service": [
-      [
-        "ConditionKernelCommandLine",
-        "|snap_core"
+      "asserts": []
+    },
+    "rsyslog.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "ua-reboot-cmds.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "|/var/lib/ubuntu-advantage/marker-reboot-cmds-required"
+        ],
+        [
+          "ConditionPathExists",
+          "|/var/lib/ubuntu-advantage/marker-only-series-check"
+        ],
+        [
+          "ConditionPathExists",
+          "/var/lib/ubuntu-advantage/private/machine-token.json"
+        ]
       ],
-      [
-        "ConditionKernelCommandLine",
-        "|snapd_recovery_mode"
-      ]
-    ],
-    "sysstat.service": [],
-    "snapd.service": [],
-    "snapd.apparmor.service": [
-      [
-        "ConditionSecurity",
-        "apparmor"
-      ]
-    ],
-    "ufw.service": [],
-    "ModemManager.service": [
-      [
-        "ConditionVirtualization",
-        "!container"
-      ]
-    ],
-    "snapd.autoimport.service": [
-      [
-        "ConditionKernelCommandLine",
-        "|snap_core"
+      "asserts": []
+    },
+    "chrony.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "ssh.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "!/etc/ssh/sshd_not_to_be_run"
+        ]
       ],
-      [
-        "ConditionKernelCommandLine",
-        "|snapd_recovery_mode"
-      ]
-    ],
-    "pollinate.service": [
-      [
-        "ConditionPathExists",
-        "!/var/cache/pollinate/seeded"
+      "asserts": []
+    },
+    "networkd-dispatcher.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "redis-server.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "containerd.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "open-vm-tools.service": {
+      "conditions": [
+        [
+          "ConditionVirtualization",
+          "vmware"
+        ]
       ],
-      [
-        "ConditionVirtualization",
-        "!container"
-      ]
-    ],
-    "secureboot-db.service": [
-      [
-        "ConditionPathExists",
-        "/sys/firmware/efi/efivars/db-d719b2cb-3d3a-4596-a3bc-dad00e67656f"
-      ]
-    ],
-    "grub-common.service": [
-      [
-        "ConditionPathExists",
-        "/boot/grub/grub.cfg"
-      ]
-    ],
-    "remote-fs.target": [],
-    "lxd-installer.socket": [],
-    "apport.service": [
-      [
-        "ConditionVirtualization",
-        "!container"
-      ]
-    ],
-    "docker.service": [],
-    "e2scrub_reap.service": [
-      [
-        "ConditionCapability",
-        "CAP_SYS_ADMIN"
+      "asserts": []
+    },
+    "grub-initrd-fallback.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/boot/grub/grub.cfg"
+        ]
       ],
-      [
-        "ConditionCapability",
-        "CAP_SYS_RAWIO"
-      ]
-    ],
-    "systemd-networkd.service": [
-      [
-        "ConditionCapability",
-        "CAP_NET_ADMIN"
-      ]
-    ],
-    "mongod.service": [],
-    "dmesg.service": [],
-    "snapd.seeded.service": [],
-    "inetutils-inetd.service": [
-      [
-        "ConditionPathExists",
-        "/etc/inetd.conf"
-      ]
-    ],
-    "ubuntu-advantage.service": [
-      [
-        "ConditionPathExists",
-        "!/var/lib/ubuntu-advantage/private/machine-token.json"
+      "asserts": []
+    },
+    "tat_agent.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "snapd.core-fixup.service": {
+      "conditions": [
+        [
+          "ConditionKernelCommandLine",
+          "|snap_core"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "|snapd_recovery_mode"
+        ]
       ],
-      [
-        "ConditionPathExists",
-        "|/run/cloud-init/cloud-id-gce"
+      "asserts": []
+    },
+    "sysstat.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "snapd.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "snapd.apparmor.service": {
+      "conditions": [
+        [
+          "ConditionSecurity",
+          "apparmor"
+        ]
       ],
-      [
-        "ConditionPathExists",
-        "|/run/cloud-init/cloud-id-azure"
+      "asserts": []
+    },
+    "ufw.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "ModemManager.service": {
+      "conditions": [
+        [
+          "ConditionVirtualization",
+          "!container"
+        ]
       ],
-      [
-        "ConditionPathExists",
-        "|/run/cloud-init/cloud-id-lxd"
+      "asserts": []
+    },
+    "snapd.autoimport.service": {
+      "conditions": [
+        [
+          "ConditionKernelCommandLine",
+          "|snap_core"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "|snapd_recovery_mode"
+        ]
       ],
-      [
-        "ConditionPathExists",
-        "|/run/ubuntu-advantage/flags/auto-attach-failed"
-      ]
-    ],
-    "console-setup.service": [
-      [
-        "ConditionPathExists",
-        "/bin/setupcon"
-      ]
-    ],
-    "cron.service": [],
-    "dbus.service": [],
-    "systemd-logind.service": [],
-    "plymouth-quit.service": [],
-    "plymouth-quit-wait.service": [],
-    "getty.target": [],
-    "systemd-ask-password-wall.path": [],
-    "systemd-user-sessions.service": [],
-    "systemd-update-utmp-runlevel.service": [
-      [
-        "ConditionPathExists",
-        "!/etc/initrd-release"
-      ]
-    ],
-    "basic.target": [],
-    "rescue.service": [],
-    "rescue.target": [],
-    "dbus-org.freedesktop.thermald.service": [
-      [
-        "ConditionVirtualization",
-        "no"
-      ]
-    ],
-    "sysinit.target": [],
-    "shutdown.target": [],
-    "network.target": [],
-    "local-fs.target": [],
-    "getty-pre.target": [],
-    "syslog.service": [],
-    "syslog.socket": [],
-    "chronyd.service": [],
-    "time-sync.target": [],
-    "sshd.service": [
-      [
-        "ConditionPathExists",
-        "!/etc/ssh/sshd_not_to_be_run"
-      ]
-    ],
-    "redis.service": [],
-    "vmtoolsd.service": [
-      [
-        "ConditionVirtualization",
-        "vmware"
-      ]
-    ],
-    "vgauth.service": [
-      [
-        "ConditionVirtualization",
-        "vmware"
-      ]
-    ],
-    "apparmor.service": [
-      [
-        "ConditionPathExists",
-        "!/rofs/etc/apparmor.d"
+      "asserts": []
+    },
+    "pollinate.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "!/var/cache/pollinate/seeded"
+        ],
+        [
+          "ConditionVirtualization",
+          "!container"
+        ]
       ],
-      [
-        "ConditionPathExists",
-        "!/run/live/overlay/work"
+      "asserts": []
+    },
+    "secureboot-db.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/sys/firmware/efi/efivars/db-d719b2cb-3d3a-4596-a3bc-dad00e67656f"
+        ]
       ],
-      [
-        "ConditionSecurity",
-        "apparmor"
+      "asserts": []
+    },
+    "grub-common.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/boot/grub/grub.cfg"
+        ]
       ],
-      [
-        "AssertPathIsReadWrite",
-        "/sys/kernel/security/apparmor/.load"
-      ]
-    ],
-    "systemd-remount-fs.service": [],
-    "systemd-tmpfiles-setup.service": [],
-    "systemd-modules-load.service": [
-      [
-        "ConditionDirectoryNotEmpty",
-        "|/lib/modules-load.d"
+      "asserts": []
+    },
+    "remote-fs.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "lxd-installer.socket": {
+      "conditions": [],
+      "asserts": []
+    },
+    "apport.service": {
+      "conditions": [
+        [
+          "ConditionVirtualization",
+          "!container"
+        ]
       ],
-      [
-        "ConditionDirectoryNotEmpty",
-        "|/usr/lib/modules-load.d"
+      "asserts": []
+    },
+    "docker.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "e2scrub_reap.service": {
+      "conditions": [
+        [
+          "ConditionCapability",
+          "CAP_SYS_ADMIN"
+        ],
+        [
+          "ConditionCapability",
+          "CAP_SYS_RAWIO"
+        ]
       ],
-      [
-        "ConditionDirectoryNotEmpty",
-        "|/usr/local/lib/modules-load.d"
+      "asserts": []
+    },
+    "systemd-networkd.service": {
+      "conditions": [
+        [
+          "ConditionCapability",
+          "CAP_NET_ADMIN"
+        ]
       ],
-      [
-        "ConditionDirectoryNotEmpty",
-        "|/etc/modules-load.d"
+      "asserts": []
+    },
+    "mongod.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "dmesg.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "snapd.seeded.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "inetutils-inetd.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/etc/inetd.conf"
+        ]
       ],
-      [
-        "ConditionDirectoryNotEmpty",
-        "|/run/modules-load.d"
+      "asserts": []
+    },
+    "ubuntu-advantage.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "!/var/lib/ubuntu-advantage/private/machine-token.json"
+        ],
+        [
+          "ConditionPathExists",
+          "|/run/cloud-init/cloud-id-gce"
+        ],
+        [
+          "ConditionPathExists",
+          "|/run/cloud-init/cloud-id-azure"
+        ],
+        [
+          "ConditionPathExists",
+          "|/run/cloud-init/cloud-id-lxd"
+        ],
+        [
+          "ConditionPathExists",
+          "|/run/ubuntu-advantage/flags/auto-attach-failed"
+        ]
       ],
-      [
-        "ConditionKernelCommandLine",
-        "|modules-load"
+      "asserts": []
+    },
+    "console-setup.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/bin/setupcon"
+        ]
       ],
-      [
-        "ConditionKernelCommandLine",
-        "|rd.modules-load"
+      "asserts": []
+    },
+    "cron.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "dbus.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-logind.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "plymouth-quit.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "plymouth-quit-wait.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "getty.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-ask-password-wall.path": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-user-sessions.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-update-utmp-runlevel.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "!/etc/initrd-release"
+        ]
       ],
-      [
-        "ConditionCapability",
-        "CAP_SYS_MODULE"
-      ]
-    ],
-    "cloud-init-local.service": [],
-    "sleep.target": [],
-    "emergency.target": [],
-    "network-online.target": [],
-    "snapd.socket": [],
-    "time-set.target": [],
-    "snapd.mounts.target": [],
-    "network-pre.target": [],
-    "dbus-org.freedesktop.ModemManager1.service": [
-      [
-        "ConditionVirtualization",
-        "!container"
-      ]
-    ],
-    "polkit.service": [],
-    "suspend.target": [],
-    "hibernate.target": [],
-    "hybrid-sleep.target": [],
-    "suspend-then-hibernate.target": [],
-    "remote-fs-pre.target": [],
-    "sockets.target": [],
-    "docker.socket": [],
-    "nss-lookup.target": [],
-    "systemd-networkd.socket": [
-      [
-        "ConditionCapability",
-        "CAP_NET_ADMIN"
-      ]
-    ],
-    "systemd-udevd.service": [
-      [
-        "ConditionPathIsReadWrite",
-        "/sys"
-      ]
-    ],
-    "systemd-sysusers.service": [
-      [
-        "ConditionNeedsUpdate",
-        "|/etc"
+      "asserts": []
+    },
+    "basic.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "rescue.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "rescue.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "dbus-org.freedesktop.thermald.service": {
+      "conditions": [
+        [
+          "ConditionVirtualization",
+          "no"
+        ]
       ],
-      [
-        "ConditionCredential",
-        "|sysusers.extra"
-      ]
-    ],
-    "systemd-sysctl.service": [
-      [
-        "ConditionPathIsReadWrite",
-        "/proc/sys/net/"
-      ]
-    ],
-    "initrd-switch-root.target": [
-      [
-        "AssertPathExists",
-        "/etc/initrd-release"
-      ]
-    ],
-    "cloud-final.service": [],
-    "inetd.service": [
-      [
-        "ConditionPathExists",
-        "/etc/inetd.conf"
-      ]
-    ],
-    "nss-user-lookup.target": [],
-    "dbus.socket": [],
-    "user.slice": [],
-    "modprobe@.service": [
-      [
-        "ConditionCapability",
-        "CAP_SYS_MODULE"
-      ]
-    ],
-    "rc-local.service": [
-      [
-        "ConditionFileIsExecutable",
-        "/etc/rc.local"
-      ]
-    ],
-    "plymouth-start.service": [
-      [
-        "ConditionKernelCommandLine",
-        "!plymouth.enable=0"
+      "asserts": []
+    },
+    "sysinit.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "shutdown.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "network.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "local-fs.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "getty-pre.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "syslog.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "syslog.socket": {
+      "conditions": [],
+      "asserts": []
+    },
+    "chronyd.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "time-sync.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "sshd.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "!/etc/ssh/sshd_not_to_be_run"
+        ]
       ],
-      [
-        "ConditionKernelCommandLine",
-        "!nosplash"
+      "asserts": []
+    },
+    "redis.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "vmtoolsd.service": {
+      "conditions": [
+        [
+          "ConditionVirtualization",
+          "vmware"
+        ]
       ],
-      [
-        "ConditionKernelCommandLine",
-        "splash"
+      "asserts": []
+    },
+    "vgauth.service": {
+      "conditions": [
+        [
+          "ConditionVirtualization",
+          "vmware"
+        ]
       ],
-      [
-        "ConditionVirtualization",
-        "!container"
-      ]
-    ],
-    "paths.target": [],
-    "cryptsetup.target": [],
-    "emergency.service": [],
-    "systemd-update-utmp.service": [
-      [
-        "ConditionPathExists",
-        "!/etc/initrd-release"
-      ]
-    ],
-    "runlevel1.target": [],
-    "runlevel2.target": [],
-    "runlevel3.target": [],
-    "runlevel4.target": [],
-    "runlevel5.target": [],
-    "timers.target": [],
-    "slices.target": [],
-    "swap.target": [],
-    "local-fs-pre.target": [],
-    "systemd-journald-audit.socket": [
-      [
-        "ConditionSecurity",
-        "audit"
+      "asserts": []
+    },
+    "apparmor.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "!/rofs/etc/apparmor.d"
+        ],
+        [
+          "ConditionPathExists",
+          "!/run/live/overlay/work"
+        ],
+        [
+          "ConditionSecurity",
+          "apparmor"
+        ]
       ],
-      [
-        "ConditionCapability",
-        "CAP_AUDIT_READ"
+      "asserts": [
+        [
+          "AssertPathIsReadWrite",
+          "/sys/kernel/security/apparmor/.load"
+        ]
       ]
-    ],
-    "systemd-fsck-root.service": [
-      [
-        "ConditionPathExists",
-        "!/run/initramfs/fsck-root"
+    },
+    "systemd-remount-fs.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-tmpfiles-setup.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-modules-load.service": {
+      "conditions": [
+        [
+          "ConditionDirectoryNotEmpty",
+          "|/lib/modules-load.d"
+        ],
+        [
+          "ConditionDirectoryNotEmpty",
+          "|/usr/lib/modules-load.d"
+        ],
+        [
+          "ConditionDirectoryNotEmpty",
+          "|/usr/local/lib/modules-load.d"
+        ],
+        [
+          "ConditionDirectoryNotEmpty",
+          "|/etc/modules-load.d"
+        ],
+        [
+          "ConditionDirectoryNotEmpty",
+          "|/run/modules-load.d"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "|modules-load"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "|rd.modules-load"
+        ],
+        [
+          "ConditionCapability",
+          "CAP_SYS_MODULE"
+        ]
       ],
-      [
-        "ConditionPathIsReadWrite",
-        "!/"
-      ]
-    ],
-    "systemd-journald.service": [],
-    "cloud-init.target": [],
-    "snapd.mounts-pre.target": [],
-    "systemd-suspend.service": [],
-    "systemd-hibernate.service": [],
-    "systemd-hybrid-sleep.service": [],
-    "systemd-suspend-then-hibernate.service": [],
-    "systemd-hwdb-update.service": [
-      [
-        "ConditionPathExists",
-        "|!/usr/lib/udev/hwdb.bin"
+      "asserts": []
+    },
+    "cloud-init-local.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "sleep.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "emergency.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "network-online.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "snapd.socket": {
+      "conditions": [],
+      "asserts": []
+    },
+    "time-set.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "snapd.mounts.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "network-pre.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "dbus-org.freedesktop.ModemManager1.service": {
+      "conditions": [
+        [
+          "ConditionVirtualization",
+          "!container"
+        ]
       ],
-      [
-        "ConditionPathExists",
-        "|/etc/udev/hwdb.bin"
+      "asserts": []
+    },
+    "polkit.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "suspend.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "hibernate.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "hybrid-sleep.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "suspend-then-hibernate.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "remote-fs-pre.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "sockets.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "docker.socket": {
+      "conditions": [],
+      "asserts": []
+    },
+    "nss-lookup.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-networkd.socket": {
+      "conditions": [
+        [
+          "ConditionCapability",
+          "CAP_NET_ADMIN"
+        ]
       ],
-      [
-        "ConditionDirectoryNotEmpty",
-        "|/etc/udev/hwdb.d/"
+      "asserts": []
+    },
+    "systemd-udevd.service": {
+      "conditions": [
+        [
+          "ConditionPathIsReadWrite",
+          "/sys"
+        ]
       ],
-      [
-        "ConditionNeedsUpdate",
-        "/etc"
-      ]
-    ],
-    "systemd-tmpfiles-setup-dev-early.service": [],
-    "systemd-tmpfiles-setup-dev.service": [],
-    "systemd-update-done.service": [
-      [
-        "ConditionNeedsUpdate",
-        "|/etc"
+      "asserts": []
+    },
+    "systemd-sysusers.service": {
+      "conditions": [
+        [
+          "ConditionNeedsUpdate",
+          "|/etc"
+        ],
+        [
+          "ConditionCredential",
+          "|sysusers.extra"
+        ]
       ],
-      [
-        "ConditionNeedsUpdate",
-        "|/var"
-      ]
-    ],
-    "initrd-switch-root.service": [
-      [
-        "AssertPathExists",
-        "/etc/initrd-release"
-      ]
-    ],
-    "initrd-udevadm-cleanup-db.service": [
-      [
-        "AssertPathExists",
-        "/etc/initrd-release"
-      ]
-    ],
-    "initrd-root-fs.target": [
-      [
-        "AssertPathExists",
-        "/etc/initrd-release"
-      ]
-    ],
-    "initrd-fs.target": [
-      [
-        "AssertPathExists",
-        "/etc/initrd-release"
-      ]
-    ],
-    "initrd-cleanup.service": [
-      [
-        "AssertPathExists",
-        "/etc/initrd-release"
-      ]
-    ],
-    "cloud-config.service": [],
-    "apt-daily.service": [
-      [
-        "ConditionACPower",
-        "true"
-      ]
-    ],
-    "systemd-ask-password-plymouth.path": [
-      [
-        "ConditionPathExists",
-        "/run/plymouth/pid"
+      "asserts": []
+    },
+    "systemd-sysctl.service": {
+      "conditions": [
+        [
+          "ConditionPathIsReadWrite",
+          "/proc/sys/net/"
+        ]
       ],
-      [
-        "ConditionKernelCommandLine",
-        "!plymouth.enable=0"
+      "asserts": []
+    },
+    "initrd-switch-root.target": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
+      ]
+    },
+    "cloud-final.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "inetd.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/etc/inetd.conf"
+        ]
       ],
-      [
-        "ConditionKernelCommandLine",
-        "!nosplash"
+      "asserts": []
+    },
+    "nss-user-lookup.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "dbus.socket": {
+      "conditions": [],
+      "asserts": []
+    },
+    "user.slice": {
+      "conditions": [],
+      "asserts": []
+    },
+    "modprobe@.service": {
+      "conditions": [
+        [
+          "ConditionCapability",
+          "CAP_SYS_MODULE"
+        ]
       ],
-      [
-        "ConditionKernelCommandLine",
-        "splash"
+      "asserts": []
+    },
+    "rc-local.service": {
+      "conditions": [
+        [
+          "ConditionFileIsExecutable",
+          "/etc/rc.local"
+        ]
       ],
-      [
-        "ConditionVirtualization",
-        "!container"
-      ]
-    ],
-    "systemd-udev-trigger.service": [
-      [
-        "ConditionPathIsReadWrite",
-        "/sys"
-      ]
-    ],
-    "keyboard-setup.service": [
-      [
-        "ConditionPathExists",
-        "/bin/setupcon"
-      ]
-    ],
-    "systemd-ask-password-plymouth.service": [
-      [
-        "ConditionPathExists",
-        "/run/plymouth/pid"
+      "asserts": []
+    },
+    "plymouth-start.service": {
+      "conditions": [
+        [
+          "ConditionKernelCommandLine",
+          "!plymouth.enable=0"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "!nosplash"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "splash"
+        ],
+        [
+          "ConditionVirtualization",
+          "!container"
+        ]
       ],
-      [
-        "ConditionKernelCommandLine",
-        "!plymouth.enable=0"
+      "asserts": []
+    },
+    "paths.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "cryptsetup.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "emergency.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-update-utmp.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "!/etc/initrd-release"
+        ]
       ],
-      [
-        "ConditionKernelCommandLine",
-        "!nosplash"
+      "asserts": []
+    },
+    "runlevel1.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "runlevel2.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "runlevel3.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "runlevel4.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "runlevel5.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "timers.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "slices.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "swap.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "local-fs-pre.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-journald-audit.socket": {
+      "conditions": [
+        [
+          "ConditionSecurity",
+          "audit"
+        ],
+        [
+          "ConditionCapability",
+          "CAP_AUDIT_READ"
+        ]
       ],
-      [
-        "ConditionKernelCommandLine",
-        "splash"
+      "asserts": []
+    },
+    "systemd-fsck-root.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "!/run/initramfs/fsck-root"
+        ],
+        [
+          "ConditionPathIsReadWrite",
+          "!/"
+        ]
       ],
-      [
-        "ConditionVirtualization",
-        "!container"
+      "asserts": []
+    },
+    "systemd-journald.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "cloud-init.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "snapd.mounts-pre.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-suspend.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-hibernate.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-hybrid-sleep.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-suspend-then-hibernate.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-hwdb-update.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "|!/usr/lib/udev/hwdb.bin"
+        ],
+        [
+          "ConditionPathExists",
+          "|/etc/udev/hwdb.bin"
+        ],
+        [
+          "ConditionDirectoryNotEmpty",
+          "|/etc/udev/hwdb.d/"
+        ],
+        [
+          "ConditionNeedsUpdate",
+          "/etc"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-tmpfiles-setup-dev-early.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-tmpfiles-setup-dev.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-update-done.service": {
+      "conditions": [
+        [
+          "ConditionNeedsUpdate",
+          "|/etc"
+        ],
+        [
+          "ConditionNeedsUpdate",
+          "|/var"
+        ]
+      ],
+      "asserts": []
+    },
+    "initrd-switch-root.service": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
       ]
-    ],
-    "systemd-fsckd.socket": [],
-    "systemd-journald.socket": [],
-    "systemd-journald-dev-log.socket": [],
-    "soft-reboot.target": [],
-    "systemd-udevd-control.socket": [
-      [
-        "ConditionPathIsReadWrite",
-        "/sys"
+    },
+    "initrd-udevadm-cleanup-db.service": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
       ]
-    ],
-    "systemd-udevd-kernel.socket": [
-      [
-        "ConditionPathIsReadWrite",
-        "/sys"
+    },
+    "initrd-root-fs.target": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
       ]
-    ],
-    "systemd-udev-settle.service": [
-      [
-        "ConditionPathIsReadWrite",
-        "/sys"
+    },
+    "initrd-fs.target": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
       ]
-    ],
-    "initrd-parse-etc.service": [
-      [
-        "AssertPathExists",
-        "/etc/initrd-release"
+    },
+    "initrd-cleanup.service": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
       ]
-    ],
-    "initrd.target": [
-      [
-        "AssertPathExists",
-        "/etc/initrd-release"
+    },
+    "cloud-config.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "apt-daily.service": {
+      "conditions": [
+        [
+          "ConditionACPower",
+          "true"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-ask-password-plymouth.path": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/run/plymouth/pid"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "!plymouth.enable=0"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "!nosplash"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "splash"
+        ],
+        [
+          "ConditionVirtualization",
+          "!container"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-udev-trigger.service": {
+      "conditions": [
+        [
+          "ConditionPathIsReadWrite",
+          "/sys"
+        ]
+      ],
+      "asserts": []
+    },
+    "keyboard-setup.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/bin/setupcon"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-ask-password-plymouth.service": {
+      "conditions": [
+        [
+          "ConditionPathExists",
+          "/run/plymouth/pid"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "!plymouth.enable=0"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "!nosplash"
+        ],
+        [
+          "ConditionKernelCommandLine",
+          "splash"
+        ],
+        [
+          "ConditionVirtualization",
+          "!container"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-fsckd.socket": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-journald.socket": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-journald-dev-log.socket": {
+      "conditions": [],
+      "asserts": []
+    },
+    "soft-reboot.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-udevd-control.socket": {
+      "conditions": [
+        [
+          "ConditionPathIsReadWrite",
+          "/sys"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-udevd-kernel.socket": {
+      "conditions": [
+        [
+          "ConditionPathIsReadWrite",
+          "/sys"
+        ]
+      ],
+      "asserts": []
+    },
+    "systemd-udev-settle.service": {
+      "conditions": [
+        [
+          "ConditionPathIsReadWrite",
+          "/sys"
+        ]
+      ],
+      "asserts": []
+    },
+    "initrd-parse-etc.service": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
       ]
-    ],
-    "cloud-config.target": [],
-    "systemd-soft-reboot.service": [],
-    "initrd-root-device.target": [
-      [
-        "AssertPathExists",
-        "/etc/initrd-release"
+    },
+    "initrd.target": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
       ]
-    ],
-    "initrd-usr-fs.target": [
-      [
-        "AssertPathExists",
-        "/etc/initrd-release"
+    },
+    "cloud-config.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-soft-reboot.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "initrd-root-device.target": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
       ]
-    ],
-    "cloud-init.service": [],
-    "umount.target": [],
-    "final.target": [],
-    "systemd-networkd-wait-online.service": [
-      [
-        "ConditionCapability",
-        "CAP_NET_ADMIN"
+    },
+    "initrd-usr-fs.target": {
+      "conditions": [],
+      "asserts": [
+        [
+          "AssertPathExists",
+          "/etc/initrd-release"
+        ]
       ]
-    ]
+    },
+    "cloud-init.service": {
+      "conditions": [],
+      "asserts": []
+    },
+    "umount.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "final.target": {
+      "conditions": [],
+      "asserts": []
+    },
+    "systemd-networkd-wait-online.service": {
+      "conditions": [
+        [
+          "ConditionCapability",
+          "CAP_NET_ADMIN"
+        ]
+      ],
+      "asserts": []
+    }
   }
 }
